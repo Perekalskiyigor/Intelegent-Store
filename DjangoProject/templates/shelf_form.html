@@ -1,0 +1,9 @@
+
+{% block content %}
+  <h1>{{ object.pk|yesno:"Редактировать полку,Новая полка" }}</h1>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+    <a href="{% url 'inhra-settings' %}">Отмена</a>
+  </form>
+{% endblock %}

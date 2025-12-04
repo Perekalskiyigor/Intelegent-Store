@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Удалить полку: {{ object }}</h1>
+  <form method="post">{% csrf_token %}
+    <p>Вы уверены?</p>
+    <button type="submit">Удалить</button>
+    <a href="{% url 'inhra-settings' %}">Отмена</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,7 @@
+<!-- templates/warehouse_confirm_delete.html -->
+<h3>Удалить склад: {{ object }}?</h3>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger" type="submit">Да, удалить</button>
+  <a class="btn btn-secondary" href="{% url 'inhra-settings' %}">Отмена</a>
+</form>

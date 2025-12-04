@@ -1,0 +1,386 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flexy Free Bootstrap Admin Template by WrapPixel</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'assets/images/logos/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/styles.min.css' %}" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+
+    <!--  App Topstrip -->
+    <div class="app-topstrip bg-dark py-6 px-3 w-100 d-lg-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-center gap-5 mb-2 mb-lg-0">
+        <a class="d-flex justify-content-center" href="#">
+          <img src="assets/images/logos/logo-wrappixel.svg" alt="" width="150">
+        </a>
+
+        
+      </div>
+
+      <div class="d-lg-flex align-items-center gap-2">
+        <h3 class="text-white mb-2 mb-lg-0 fs-5 text-center">Check Flexy Premium Version</h3>
+        <div class="d-flex align-items-center justify-content-center gap-2">
+          
+          <div class="dropdown d-flex">
+            <a class="btn btn-primary d-flex align-items-center gap-1 " href="javascript:void(0)" id="drop4"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="ti ti-shopping-cart fs-5"></i>
+              Buy Now
+              <i class="ti ti-chevron-down fs-5"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Sidebar Start -->
+
+        {% block sidebar %}
+        {% include "includes/_sidebar.html" %}
+        {% endblock %}
+    
+    <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <ul class="navbar-nav">
+            <li class="nav-item d-block d-xl-none">
+              <a class="nav-link sidebartoggler " id="headerCollapse" href="javascript:void(0)">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link " href="javascript:void(0)" id="drop1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="ti ti-bell"></i>
+                <div class="notification bg-primary rounded-circle"></div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-animate-up" aria-labelledby="drop1">
+                <div class="message-body">
+                  <a href="javascript:void(0)" class="dropdown-item">
+                    Item 1
+                  </a>
+                  <a href="javascript:void(0)" class="dropdown-item">
+                    Item 2
+                  </a>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+               
+              <li class="nav-item dropdown">
+                <a class="nav-link " href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <img src="{% static 'assets/images/profile/user-1.jpg' %}" alt="" width="35" height="35" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                  <div class="message-body">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-user fs-6"></i>
+                      <p class="mb-0 fs-3">My Profile</p>
+                    </a>
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-mail fs-6"></i>
+                      <p class="mb-0 fs-3">My Account</p>
+                    </a>
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="ti ti-list-check fs-6"></i>
+                      <p class="mb-0 fs-3">My Task</p>
+                    </a>
+                    <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+      <!--  Header End -->
+      <div class="body-wrapper-inner">
+          <div class="container-fluid">
+          <div class="row g-4">
+
+            <!-- СКЛАД: выбор склада для фильтрации стеллажей -->
+<div class="col-12 col-lg-6">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title mb-3">Склад</h4>
+
+      {% if error %}
+        <div class="alert alert-warning" role="alert">{{ error }}</div>
+      {% endif %}
+
+      <!-- эта форма просто фильтрует список стеллажей по складу -->
+      <form method="get" action="{% url 'inhra-settings' %}">
+        <label for="warehouseSelect" class="form-label">Выберите склад</label>
+        <select id="warehouseSelect" name="warehouse" class="form-select">
+          <option value="" {% if not selected_warehouse %}selected{% endif %} disabled>— выбрать —</option>
+          {% for w in warehouses %}
+            <option value="{{ w.id }}" {% if selected_warehouse|default:'' == w.id|stringformat:"s" %}selected{% endif %}>
+              {{ w.name }}
+            </option>
+          {% empty %}
+            <option value="" disabled>Складов нет</option>
+          {% endfor %}
+        </select>
+
+        <div class="mt-3 d-flex flex-wrap gap-2">
+          <button type="submit" class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="ti ti-rotate"></i>Показать стеллажи
+          </button>
+
+          <!-- Ваши действия со складами (как было) можно оставить отдельной формой -->
+        </div>
+      </form>
+
+      <!-- Отдельная форма под действия со складами (как у вас изначально) можно оставить ниже -->
+      <form method="get" action="{% url 'warehouse_action' %}" class="mt-3">
+        <label for="warehouseActionSelect" class="form-label">Действия со складом</label>
+        <select id="warehouseActionSelect" name="id" class="form-select">
+          <option value="" selected disabled>— выбрать —</option>
+          {% for w in warehouses %}
+            <option value="{{ w.id }}">{{ w.name }}</option>
+          {% endfor %}
+        </select>
+        <div class="mt-3 d-flex flex-wrap gap-2">
+          <button type="submit" name="action" value="add" class="btn btn-primary d-flex align-items-center gap-2">
+            <i class="ti ti-plus"></i>Добавить
+          </button>
+          <button type="submit" name="action" value="edit" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="ti ti-edit"></i>Изменить
+          </button>
+          <button type="submit" name="action" value="delete" class="btn btn-outline-danger d-flex align-items-center gap-2">
+            <i class="ti ti-trash"></i>Удалить
+          </button>
+          <button type="submit" name="action" value="refresh" class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="ti ti-rotate"></i>Обновить
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+            <!-- СТЕЛЛАЖ: действия по аналогии со складом -->
+            <!-- СТЕЛЛАЖ: выбор стеллажа для фильтрации полок -->
+          <div class="col-12 col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title mb-3">Стеллаж</h4>
+
+                {% if selected_warehouse %}
+                  <div class="text-muted mb-2">
+                    Склад: {{ selected_warehouse.name }} (ID {{ selected_warehouse.id }})
+                  </div>
+                {% endif %}
+
+                <!-- эта форма фильтрует список полок по выбранному стеллажу -->
+                <form method="get" action="{% url 'inhra-settings' %}">
+                  <!-- сохраняем выбранный склад -->
+                  <input type="hidden" name="warehouse" value="{{ selected_warehouse_id }}">
+
+                  <label for="rackFilterSelect" class="form-label">Выберите стеллаж (для показа полок)</label>
+                  <select id="rackFilterSelect" name="rack" class="form-select">
+                    <option value="" {% if not selected_rack %}selected{% endif %} disabled>— выбрать —</option>
+                    {% for r in racks %}
+                      <option value="{{ r.id }}" {% if selected_rack and selected_rack.id == r.id %}selected{% endif %}>
+                        {{ r.name }}
+                      </option>
+                    {% empty %}
+                      <option value="" disabled>Стеллажей нет</option>
+                    {% endfor %}
+                  </select>
+
+                  <div class="mt-3 d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-outline-primary d-flex align-items-center gap-2">
+                      <i class="ti ti-rotate"></i>Показать полки
+                    </button>
+                  </div>
+                </form>
+
+                <!-- Отдельная форма под действия со стеллажами -->
+                <form method="get" action="{% url 'rack_action' %}" class="mt-3">
+                  <!-- для action=add нужен склад -->
+                  <input type="hidden" name="warehouse" value="{{ selected_warehouse_id }}">
+
+                  <label for="rackActionSelect" class="form-label">Действия со стеллажом</label>
+                  <select id="rackActionSelect" name="id" class="form-select">
+                    <option value="" selected disabled>— выбрать —</option>
+                    {% for r in racks %}
+                      <option value="{{ r.id }}">{{ r.name }}</option>
+                    {% empty %}
+                      <option value="" disabled>Стеллажей нет</option>
+                    {% endfor %}
+                  </select>
+
+                  <div class="mt-3 d-flex flex-wrap gap-2">
+                    <button type="submit" name="action" value="add" class="btn btn-primary d-flex align-items-center gap-2"
+                            {% if not selected_warehouse_id %}disabled{% endif %}>
+                      <i class="ti ti-plus"></i>Добавить
+                    </button>
+                    <button type="submit" name="action" value="edit" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+                      <i class="ti ti-edit"></i>Изменить
+                    </button>
+                    <button type="submit" name="action" value="delete" class="btn btn-outline-danger d-flex align-items-center gap-2">
+                      <i class="ti ti-trash"></i>Удалить
+                    </button>
+                    <button type="submit" name="action" value="refresh" class="btn btn-outline-primary d-flex align-items-center gap-2">
+                      <i class="ti ti-rotate"></i>Обновить
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+            <!-- ПОЛКА -->
+            
+            
+            <!-- ПОЛКА (3-я колонка: под СКЛАДОМ) -->
+<div class="col-12 col-lg-6">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title mb-3">Полка</h4>
+
+      {% if selected_rack %}
+        <div class="text-muted mb-2">
+          Стеллаж: {{ selected_rack.name }} (ID {{ selected_rack.id }})
+        </div>
+      {% endif %}
+
+      <form method="get" action="{% url 'shelf_action' %}">
+        <input type="hidden" name="rack" value="{{ selected_rack_id }}">
+        <label for="shelfSelect" class="form-label">Выберите полку</label>
+        <select id="shelfSelect" name="id" class="form-select">
+          <option value="" selected disabled>— выбрать —</option>
+          {% for s in shelves %}
+            <option value="{{ s.id }}">{{ s.code }} — уровень {{ s.level_no }}</option>
+          {% empty %}
+            <option value="" disabled>Полок нет</option>
+          {% endfor %}
+        </select>
+        <div class="mt-3 d-flex flex-wrap gap-2">
+          <button type="submit" name="action" value="add" class="btn btn-primary d-flex align-items-center gap-2">
+            <i class="ti ti-plus"></i>Добавить
+          </button>
+          <button type="submit" name="action" value="edit" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="ti ti-edit"></i>Изменить
+          </button>
+          <button type="submit" name="action" value="delete" class="btn btn-outline-danger d-flex align-items-center gap-2">
+            <i class="ti ti-trash"></i>Удалить
+          </button>
+          <button type="submit" name="action" value="refresh" class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="ti ti-rotate"></i>Обновить
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ЯЧЕЙКА (4-я колонка: под СТЕЛЛАЖЕМ) -->
+<div class="col-12 col-lg-6">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title mb-3">Ячейка</h4>
+
+      {% if selected_shelf %}
+        <div class="text-muted mb-2">
+          Полка: {{ selected_shelf.code }} — уровень {{ selected_shelf.level_no }} (ID {{ selected_shelf.id }})
+        </div>
+      {% endif %}
+
+      <!-- Фильтр ячеек по полке (оставляем в той же колонке, без вложенных .col-*) -->
+      <form method="get" action="{% url 'inhra-settings' %}" class="mb-3">
+        <input type="hidden" name="warehouse" value="{{ selected_warehouse_id }}">
+        <input type="hidden" name="rack" value="{{ selected_rack_id }}">
+        <label for="shelfFilterSelect" class="form-label">Выберите полку (для показа ячеек)</label>
+        <select id="shelfFilterSelect" name="shelf" class="form-select">
+          <option value="" {% if not selected_shelf %}selected{% endif %} disabled>— выбрать —</option>
+          {% for s in shelves %}
+            <option value="{{ s.id }}" {% if selected_shelf and selected_shelf.id == s.id %}selected{% endif %}>
+              {{ s.code }} — уровень {{ s.level_no }}
+            </option>
+          {% empty %}
+            <option value="" disabled>Полок нет</option>
+          {% endfor %}
+        </select>
+        <div class="mt-3 d-flex flex-wrap gap-2">
+          <button type="submit" class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="ti ti-rotate"></i>Показать ячейки
+          </button>
+        </div>
+      </form>
+
+      <!-- Действия с ячейкой -->
+      <form method="get" action="{% url 'bin_action' %}">
+        <input type="hidden" name="warehouse" value="{{ selected_warehouse_id }}">
+        <input type="hidden" name="rack" value="{{ selected_rack_id }}">
+        <input type="hidden" name="shelf" value="{{ selected_shelf_id }}">
+
+        <label for="binSelect" class="form-label">Выберите ячейку</label>
+        <select id="binSelect" name="id" class="form-select">
+          <option value="" selected disabled>— выбрать —</option>
+          {% for b in bins %}
+            <option value="{{ b.id }}">{{ b.address }} — позиция {{ b.position_no }}</option>
+          {% empty %}
+            <option value="" disabled>Ячеек нет</option>
+          {% endfor %}
+        </select>
+
+        <div class="mt-3 d-flex flex-wrap gap-2">
+          <button type="submit" name="action" value="add" class="btn btn-primary d-flex align-items-center gap-2"
+                  {% if not selected_shelf_id %}disabled{% endif %}>
+            <i class="ti ti-plus"></i>Добавить
+          </button>
+          <button type="submit" name="action" value="edit" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="ti ti-edit"></i>Изменить
+          </button>
+          <button type="submit" name="action" value="delete" class="btn btn-outline-danger d-flex align-items-center gap-2">
+            <i class="ti ti-trash"></i>Удалить
+          </button>
+          <button type="submit" name="action" value="refresh" class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="ti ti-rotate"></i>Обновить
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>  <!-- /.row g-4 -->
+
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+<script src="{% static 'assets/libs/jquery/dist/jquery.min.js' %}"></script>
+<script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/sidebarmenu.js' %}"></script>
+<script src="{% static 'assets/js/app.min.js' %}"></script>
+<script src="{% static 'assets/libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+<script src="{% static 'assets/libs/simplebar/dist/simplebar.js' %}"></script>
+<script src="{% static 'assets/js/dashboard.js' %}"></script>
+  <!-- solar icons -->
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+</body>
+
+</html>

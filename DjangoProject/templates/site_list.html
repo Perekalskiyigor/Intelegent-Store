@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <body>
+    <h1>Sites</h1>
+    <form>
+      <input name="q" value="{{ q|default:'' }}" placeholder="search">
+      <button>Find</button>
+    </form>
+    <table border="1" cellpadding="6">
+      <tr><th>ID</th><th>Code</th><th>Name</th></tr>
+      {% for r in sites %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.code }}</td>
+          <td>{{ r.name }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3">No data</td></tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
