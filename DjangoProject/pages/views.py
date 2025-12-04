@@ -290,3 +290,51 @@ class BinDeleteView(DeleteView):
     model = Bin
     template_name = "bin_confirm_delete.html"
     success_url = reverse_lazy("inhra-settings")
+
+# Страница со статусами
+
+def status_view(request):
+    COLS = 10
+    shelves = (
+        Shelf.objects
+        .prefetch_related('bins__ref_item', 'bins__mode')
+        .order_by('level_no', 'id')
+    )
+
+    rows = []
+    for shelf in shelves:
+        # подготовим 10 пустых ячеек по умолчанию
+        cells = [{"css": "bg-white", "text": ""} for _ in range(COLS)]
+
+        for b in shelf.bins.all():
+            # колонка = Bin.id (1..10). всё остальное игнорируем
+            if not b.id:
+                continue
+            col_idx = b.id - 1
+            if col_idx < 0 or col_idx >= COLS:
+                continue
+
+            # текст
+            text = ""
+            if b.ref_item_id is not None and getattr(b, "ref_item", None):
+                text = b.ref_item.name or ""
+
+            # цвет
+            if b.mode_id == 1:
+                css = "bg-success text-white"
+            elif b.mode_id == 2:
+                css = "bg-danger text-white"
+            elif b.mode_id == 3:
+                css = "bg-light text-body"  # светло-серый
+            else:
+                css = "bg-white"
+
+            cells[col_idx] = {"css": css, "text": text}
+
+        rows.append({"shelf": shelf, "cells": cells})
+
+    ctx = {
+        "rows": rows,
+        "cols": range(1, COLS + 1),
+    }
+    return render(request, "status.html", ctx)

@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('inhra-settings/', views.inhra_settings, name='inhra-settings'),
-    path('status/', TemplateView.as_view(template_name='status.html'), name='status'),
+    path('status/', views.status_view, name='status'),
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
 
     path("warehouses/action/", views.warehouse_action, name="warehouse_action"),

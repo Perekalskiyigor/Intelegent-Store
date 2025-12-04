@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModbusOuterChannels>
+  <OuterCh Name="канал1" Descr="" Length="1" Offset="0" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="канал2" Descr="" Length="1" Offset="1" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Канал 3" Descr="" Length="1" Offset="2" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Канал 4" Descr="" Length="1" Offset="3" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="1RGB" Descr="" Length="2" Offset="1002" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="2RGB" Descr="" Length="2" Offset="1004" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="3RGB" Descr="" Length="2" Offset="1006" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="1MESMSU" Descr="" Length="1" Offset="100" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="4RGB" Descr="" Length="2" Offset="1008" FunctionCode="WriteMultipleRegisters" CycleTime="1007" ChType="Timer" />
+  <OuterCh Name="5RGB" Descr="" Length="2" Offset="1010" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="6RGB" Descr="" Length="2" Offset="1012" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="7RGB" Descr="" Length="2" Offset="1014" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="8RGB" Descr="" Length="2" Offset="1016" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="9RGB" Descr="" Length="2" Offset="1018" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB10" Descr="" Length="2" Offset="1020" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB11" Descr="" Length="2" Offset="1022" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB12" Descr="" Length="2" Offset="1024" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB13" Descr="" Length="2" Offset="1026" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB14" Descr="" Length="2" Offset="1028" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB15" Descr="" Length="2" Offset="1030" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB16" Descr="" Length="2" Offset="1032" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB17" Descr="" Length="2" Offset="1034" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB18" Descr="" Length="2" Offset="1036" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB19" Descr="" Length="2" Offset="1038" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB20" Descr="" Length="2" Offset="1040" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="RGB0" Descr="" Length="2" Offset="1000" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+</ModbusOuterChannels>

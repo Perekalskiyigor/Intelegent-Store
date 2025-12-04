@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<LoggerEntries xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Logger name="StdLogger">
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:47" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:47" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:46" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:46" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:46" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:45" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:45" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:44" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:44" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:43" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:43" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:43" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:42" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:42" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:41" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:41" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:40" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:40" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:39" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:39" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:38" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:38" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:37" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:37" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:37" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:36" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:36" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:35" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:35" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:35" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:34" infoId="0">Modbus_Serial_Outer_Slave : Lost connection</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:34" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:34" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:34" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:34" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:33" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:33" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:33" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:32" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:32" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:31" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:31" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:30" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:30" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:29" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:29" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:29" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:28" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:28" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:27" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:27" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:27" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:26" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:26" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:25" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:25" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:25" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:24" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:24" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:23" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:23" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:23" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:22" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:22" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="PsLed" user="nobody" timestamp="27.11.2025 10:08:22" infoId="0">Start application done</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:22" infoId="0">==========================================================================================</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:22" infoId="0">Iec61850ServerCntxt::Update app_name = Application</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:22" infoId="0">Start Done</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:21" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:21" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:21" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:20" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:20" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:19" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:19" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:19" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:18" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:18" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:18" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="PsPlcInfo" user="nobody" timestamp="27.11.2025 10:08:18" infoId="0">CreateBootprojectDone: name=Application.app crc=0xe9fdd608 size=498364</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">==========================================================================================</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Iec61850ServerCntxt::Update app_name = Application</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Download Done</Entry>
+    <Entry severity="information" component="CmpApp" user="nobody" timestamp="27.11.2025 10:08:17" infoId="2">Application [Application] loaded via [Download]</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Master : IoDrvUpdateMapping</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Master : IoDrvUpdateConfiguration</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Outer_Slave : ModbusOuterTcpSlave: Initialize</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Outer_Slave : Ch=4 name=1RGB Fn=16 Offset=1000 Len=99</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Outer_Slave : Ch=3 is empty</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Outer_Slave : Ch=2 is empty</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Outer_Slave : Ch=1 is empty</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Outer_Slave : Ch=0 name=SENSORS Fn=2 Offset=1000 Len=100</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Outer_Slave : Memory allocate Ok</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus_Serial_Master : Initialize</Entry>
+    <Entry severity="information" component="PsIoDrvModbusTcpMaster_OS" user="nobody" timestamp="27.11.2025 10:08:17" infoId="0">Modbus TCP Master iec-library initialized</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Master : FB_Exit</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : FB_Exit</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Master : IoDrvUpdateConfiguration</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="PsLed" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Stop application done(DELETE)</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Stop Done</Entry>
+    <Entry severity="information" component="Ps61850Server_OS" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Prepare Download</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:14" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:13" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:12" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:11" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:10" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:09" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:08" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:07" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:06" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:05" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:04" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:03" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:02" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:01" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:08:00" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:59" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:58" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:57" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:56" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : I got packet: length = 18 bytes</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel SENSORS</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Send request for channel 1RGB</Entry>
+    <Entry severity="information" component="IoDrvPsModbusSerialMaster" user="nobody" timestamp="27.11.2025 10:07:55" infoId="0">Modbus_Serial_Outer_Slave : Response timeout</Entry>
+  </Logger>
+</LoggerEntries>
