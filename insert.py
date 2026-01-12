@@ -8,7 +8,8 @@ import scaner
 # === Глобальные переменные ===
 
 Insert = 1   # флаг режима "Размещение" (1 - активен, 0 - выключен)
-current_barcode = None  # сюда сохраним считанный штрихкод
+current_barcode = None  # сюда сохраним считанный штрихкод299633
+
 
 
 # --- Конфигурация БД ---
@@ -28,7 +29,8 @@ def init_led_task_from_bin_mode() -> dict:
         with psycopg2.connect(**DB_CONFIG) as conn, conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute(
                 '''
-                UPDATE public."IH_led_task" AS t
+                UPDATE public."IH_led_task" AS 
+
                 SET bin_status_id = b.mode_id
                 FROM public."IH_bin" AS b
                 WHERE t.bin_id = b.id
@@ -37,7 +39,9 @@ def init_led_task_from_bin_mode() -> dict:
                     t.bin_id,
                     t.bin_status_id,
                     t."Bin_Sensor_status",
-                    t.shelf_id,
+                    t.shelf_id,Тш\оПБТп
+                    Тш\оПБТп
+
                     t."Blynk_id",
                     b.mode_id,
                     b.ref_item_id,
@@ -406,20 +410,22 @@ def get_available_bin_ids_for_barcode():
 
     # SQL-запросы
     q_size = """
-        SELECT Siz.size AS sizgood
+        SELECT Siz.size::REAL AS sizgood
         FROM public."IH_ref_items" AS Items
         LEFT JOIN public."IH_ref_size" AS Siz ON Items.id = Siz.item_id
-        WHERE Items.bar_code = %s
+        WHERE btrim(Items.bar_code) = btrim(%s)
         LIMIT 1;
     """
 
-    q_bins = """
-        SELECT id
+    q_bins = """    
+            SELECT id
         FROM public."IH_bin"
-        WHERE bin_size = %s
-          AND ref_item_id IS NULL
+        WHERE ref_item_id IS NULL
+        AND ABS(bin_size - %s) < 0.001
         ORDER BY shelf_id, address, position_no;
+
     """
+
 
     #  color_id=2 — это "белый" для подсветки подходящих ячеек
     COLOR_ID_WHITE = 2
@@ -1088,10 +1094,9 @@ if __name__ == "__main__":
         close_res = close_placement_operation(op_id, new_status="NOT_PLACED")
         print("[CLOSE_PLACEMENT]", close_res)
 
-        idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
-        print("[OPEN_IDLE]", idle_res)
-
-
+    
+    
+    
     # На этом всё. Никакого автоматического PLACEMENT.
     # Если нужно разместить — вызываем run_placement_flow(...)
     # из кнопки АРМ или отдельного скрипта.
