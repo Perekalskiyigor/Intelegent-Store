@@ -1,3 +1,10 @@
+{# 
+  PARTIAL: _op_logs.html
+  Назначение:
+  Фрагмент отвечает за вывод журнала операций (логов) на страницу.
+  обновляется polling’ом (AJAX) раз в 1 секунду.
+#}
+
 {% for l in logs %}
   <div class="small">
     {{ l.id }} — {{ l.created_at }} — {{ l.operation }} — {{ l.source }} — {{ l.message }} {% if l.user %} ({{ l.user }}){% endif %}

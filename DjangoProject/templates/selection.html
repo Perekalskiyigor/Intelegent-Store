@@ -136,11 +136,11 @@
                 <div class="mb-3 p-3 border rounded">
                   <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div>
-                      <h4 class="card-title mb-1">Управление размещения</h4>
-                      <p class="mb-2 text-muted">Запуск операции размещения и вывод подсказок.</p>
+                      <h4 class="card-title mb-1">Управление отбором</h4>
+                      <p class="mb-2 text-muted">Запуск операции отбора и вывод подсказок.</p>
 
                       <div class="d-flex gap-2 flex-wrap">
-                        <button id="btn-start" class="btn btn-primary">Старт размещения</button>
+                        <button id="btn-start" class="btn btn-primary">Старт отбора</button>
                         <button id="btn-clear" class="btn btn-outline-secondary">Очистить лог</button>
                       </div>
                     </div>
@@ -220,7 +220,7 @@
   });
 
   document.getElementById("btn-start").addEventListener("click", async () => {
-    await fetch("{% url 'start_placement' %}", { method: "POST" });
+    await fetch("{% url 'start_selection' %}", { method: "POST" });
     // можно сразу обновить лог, чтобы не ждать 1 сек
     refreshLogs();
   });

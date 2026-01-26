@@ -1,3 +1,6 @@
+
+# Вспомогательная функция которая отвечает за инсерт логов в таблицу вызывваеся из всех скрпитов которые сейчас выполняются
+
 from typing import Optional
 from datetime import datetime, timezone
 import psycopg   

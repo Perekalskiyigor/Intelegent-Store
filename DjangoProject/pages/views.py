@@ -352,7 +352,7 @@ def status_partial(request):
         {"rows": rows, "cols": range(1, COLS + 1)},
     )
 
-#############################3кнопка размещения
+#############################3кнопка размещения#############################
 import threading
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -371,15 +371,50 @@ def start_placement(request):
         try:
             run_placement()
         except Exception as e:
-            # если хочешь — можно писать ошибку в БД логом:
+            # писать ошибку в БД логом:
             from pages.services import logInsert
-            logInsert.ih_log(f"Ошибка размещения: {e}", operation="PLACEMENT", source="django", user="ivanov")
+            logInsert.ih_log(f"Ошибка вызова скрипта размещения из Django view start_placement(request): {e}", operation="PLACEMENT", source="django", user="ivanov")
 
     threading.Thread(target=worker, daemon=True).start()
     return JsonResponse({"ok": True})
+
+#############################3кнопка размещения#############################
+
+
+#############################Табица с логом#############################
 
 # Логи в строку состяния
 def logs_partial(request):
     logs = OpLog.objects.order_by("-id")[:200]
     logs = reversed(list(logs))
     return render(request, "partials/_op_logs.html", {"logs": logs})
+#############################Табица с логом#############################
+
+
+#############################3кнопка Selection#############################
+import threading
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
+from .models import OpLog
+
+@csrf_exempt
+def start_selection(request):
+    if request.method != "POST":
+        return JsonResponse({"ok": False, "error": "POST required"}, status=405)
+
+    # ленивый импорт — чтобы views.py не падал при старте проекта
+    from pages.services.selection import run_selection
+
+    def worker():
+        try:
+            run_selection()
+        except Exception as e:
+            # писать ошибку в БД логом:
+            from pages.services import logInsert
+            logInsert.ih_log(f"Ошибка вызова скрипта размещения из Django view start_placement(request): {e}", operation="PLACEMENT", source="django", user="ivanov")
+
+    threading.Thread(target=worker, daemon=True).start()
+    return JsonResponse({"ok": True})
+
+#############################3кнопка размещения#############################

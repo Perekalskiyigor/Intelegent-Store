@@ -14,14 +14,18 @@ urlpatterns = [
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
     path('insert/', TemplateView.as_view(template_name='insert.html'), name='insert'),
     
+    # Отвечает а публикацию
     path("logs/partial/", views.logs_partial, name="logs_partial"),
 
-    # Кнопки
+    # Кнопки размещениее
     path("ops/start-placement/", views.start_placement, name="start_placement"),
     path("logs/partial/", views.logs_partial, name="logs_partial"),
 
+    # Кнопки отбора
+    path('selection/', TemplateView.as_view(template_name='selection.html'), name='selection'),
+    path("ops/start-selectionn/", views.start_selection, name="start_selection"),
 
-
+    
     path("warehouses/action/", views.warehouse_action, name="warehouse_action"),
     path("warehouses/add/", views.WarehouseCreateView.as_view(), name="warehouse_create"),
     path("warehouses/<int:pk>/edit/", views.WarehouseUpdateView.as_view(), name="warehouse_update"),

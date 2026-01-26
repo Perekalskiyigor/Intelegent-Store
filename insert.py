@@ -10,6 +10,11 @@ import scaner
 Insert = 1   # флаг режима "Размещение" (1 - активен, 0 - выключен)
 current_barcode = None  # сюда сохраним считанный штрихкод299633
 
+299629
+265644
+271517
+299631
+299629
 
 
 # --- Конфигурация БД ---
@@ -28,7 +33,11 @@ def init_led_task_from_bin_mode() -> dict:
     try:
         with psycopg2.connect(**DB_CONFIG) as conn, conn.cursor(cursor_factory=DictCursor) as cur:
             cur.execute(
-                '''
+                '''295750
+                299629
+                265644
+                295750
+                
                 UPDATE public."IH_led_task" AS 
 
                 SET bin_status_id = b.mode_id
