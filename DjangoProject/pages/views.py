@@ -1,14 +1,17 @@
+from datetime import timezone
 from django.shortcuts import render, redirect
 from django import forms as dj_forms
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
-from .models import Shelf, Rack, Warehouse, Bin
+from .models import Shelf, Rack, Warehouse, Bin, OpLog
 from .forms import WarehouseForm
 from .forms import RackForm  # см. ниже
 from .forms import ShelfForm
 from .forms import BinForm
 from django.shortcuts import get_object_or_404
 from django import forms
+from django.utils import timezone
+from datetime import timedelta
 
 
 # views.py
@@ -291,50 +294,92 @@ class BinDeleteView(DeleteView):
     template_name = "bin_confirm_delete.html"
     success_url = reverse_lazy("inhra-settings")
 
-# Страница со статусами
+from collections import defaultdict
+from django.shortcuts import render
 
-def status_view(request):
-    COLS = 10
-    shelves = (
-        Shelf.objects
-        .prefetch_related('bins__ref_item', 'bins__mode')
-        .order_by('level_no', 'id')
+def build_status_rows(COLS=100):
+    bins = (
+        Bin.objects
+        .select_related("ref_item")
+        .order_by("shelf_id", "id")
     )
 
+    by_shelf = defaultdict(list)
+    for b in bins:
+        by_shelf[b.shelf_id].append(b)
+
     rows = []
-    for shelf in shelves:
-        # подготовим 10 пустых ячеек по умолчанию
+    for shelf_id in sorted(by_shelf.keys()):
         cells = [{"css": "bg-white", "text": ""} for _ in range(COLS)]
 
-        for b in shelf.bins.all():
-            # колонка = Bin.id (1..10). всё остальное игнорируем
-            if not b.id:
-                continue
-            col_idx = b.id - 1
-            if col_idx < 0 or col_idx >= COLS:
-                continue
+        for idx, b in enumerate(by_shelf[shelf_id][:COLS]):
+            text = b.ref_item.name if b.ref_item_id and b.ref_item else ""
 
-            # текст
-            text = ""
-            if b.ref_item_id is not None and getattr(b, "ref_item", None):
-                text = b.ref_item.name or ""
+            err = getattr(b, "ErrorSensor", None)
+            if err is None:
+                err = getattr(b, "error_sensor", False)
 
-            # цвет
-            if b.mode_id == 1:
-                css = "bg-success text-white"
-            elif b.mode_id == 2:
+            if err:
                 css = "bg-danger text-white"
-            elif b.mode_id == 3:
-                css = "bg-light text-body"  # светло-серый
+            elif b.ref_item_id is not None:
+                css = "bg-success text-white"
             else:
                 css = "bg-white"
 
-            cells[col_idx] = {"css": css, "text": text}
+            cells[idx] = {"css": css, "text": text}
 
-        rows.append({"shelf": shelf, "cells": cells})
+        rows.append({"shelf_id": shelf_id, "cells": cells})
 
-    ctx = {
-        "rows": rows,
-        "cols": range(1, COLS + 1),
-    }
-    return render(request, "status.html", ctx)
+    return rows
+
+def status_view(request):
+    COLS = 100
+    rows = build_status_rows(COLS)
+
+    return render(
+        request,
+        "status.html",
+        {"rows": rows, "cols": range(1, COLS + 1)},
+    )
+
+def status_partial(request):
+    COLS = 100
+    rows = build_status_rows(COLS)
+
+    return render(
+        request,
+        "partials/_status_table.html",
+        {"rows": rows, "cols": range(1, COLS + 1)},
+    )
+
+#############################3кнопка размещения
+import threading
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
+from .models import OpLog
+
+@csrf_exempt
+def start_placement(request):
+    if request.method != "POST":
+        return JsonResponse({"ok": False, "error": "POST required"}, status=405)
+
+    # ленивый импорт — чтобы views.py не падал при старте проекта
+    from pages.services.placement import run_placement
+
+    def worker():
+        try:
+            run_placement()
+        except Exception as e:
+            # если хочешь — можно писать ошибку в БД логом:
+            from pages.services import logInsert
+            logInsert.ih_log(f"Ошибка размещения: {e}", operation="PLACEMENT", source="django", user="ivanov")
+
+    threading.Thread(target=worker, daemon=True).start()
+    return JsonResponse({"ok": True})
+
+# Логи в строку состяния
+def logs_partial(request):
+    logs = OpLog.objects.order_by("-id")[:200]
+    logs = reversed(list(logs))
+    return render(request, "partials/_op_logs.html", {"logs": logs})

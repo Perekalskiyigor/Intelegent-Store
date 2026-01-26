@@ -10,7 +10,7 @@ class RefItem(models.Model):
     bar_code = models.TextField(null=True, blank=True)
 
     class Meta:
-        db_table = "ref_items"
+        db_table = "IH_ref_items"
         managed = False
 
     def __str__(self):
@@ -32,7 +32,7 @@ class RefSize(models.Model):
     )
 
     class Meta:
-        db_table = "ref_size"
+        db_table = "IH_ref_size"
         managed = False
 
 
@@ -50,7 +50,7 @@ class TechUnit(models.Model):
     )
 
     class Meta:
-        db_table = "tech_unit"
+        db_table = "IH_tech_unit"
         managed = False
 
     def __str__(self):
@@ -65,7 +65,7 @@ class Warehouse(models.Model):
     name = models.TextField(null=True, blank=True)
 
     class Meta:
-        db_table = "site"   # это та же таблица, что и у Site
+        db_table = "IH_site"   # это та же таблица, что и у Site
         managed = False
 
     def __str__(self):
@@ -87,7 +87,7 @@ class Rack(models.Model):
     name = models.TextField(null=True, blank=True)
 
     class Meta:
-        db_table = "rack"
+        db_table = "IH_rack"
         managed = False
 
     def __str__(self):
@@ -126,7 +126,7 @@ class BinSignal(models.Model):
     created_add = models.DateField(db_column="createdAdd", null=True, blank=True)
 
     class Meta:
-        db_table = "bin_signal"
+        db_table = "IH_bin_signal"
         managed = False
 
     def __str__(self):
@@ -170,10 +170,28 @@ class Bin(models.Model):
         null=True,
         blank=True,
     )
+    ErrorSensor = models.BooleanField(db_column='"ErrorSensor"')
 
     class Meta:
-        db_table = "bin"    # public.bin
+        db_table = 'IH_bin'    # public.bin
         managed = False
 
     def __str__(self):
         return f"Bin#{self.id} addr={self.address} pos={self.position_no}"
+
+
+
+#логи общие
+class OpLog(models.Model):
+    id = models.BigAutoField(primary_key=True, db_column="id")  # ← ДОБАВЬ
+
+    created_at = models.DateTimeField(db_column="created_at")
+    operation = models.TextField(db_column="operation")
+    source = models.TextField(db_column="source")
+    message = models.TextField(db_column="message")
+    user = models.TextField(db_column="user", null=True, blank=True)
+
+    class Meta:
+        managed = False
+        db_table = 'IH_LOG'   # ← ВАЖНО: убери кавычки тут
+        ordering = ["id"]

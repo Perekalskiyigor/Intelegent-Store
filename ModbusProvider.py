@@ -1,5 +1,7 @@
 # pyinstaller --onefile ModbusProvider.py
-
+import os
+import sys
+import hashlib
 import time
 import threading
 from pymodbus.server import StartTcpServer
@@ -12,10 +14,18 @@ import psycopg2
 
 MODBUS_LOCK = threading.RLock()
 
+prev_sensor = {}  # bin_id -> 0/1
+
+
 # Конфигурация хоста мадбас
 HOST = "0.0.0.0"
 PORT = 1502
 UNIT = 2
+
+WATCHDOG_STALE_SEC = 15.0     # сколько секунд допускаем без изменений сенсоров
+WATCHDOG_LOG_EVERY = 2.0      # как часто печатать строку сенсоров
+
+last_coil_write_ts = time.time()
 
 ID_TASK = 0
 
@@ -27,6 +37,13 @@ DB_CONFIG = {
     "host": "localhost",
     "port": 5432,
 }
+
+class WatchdogCoilBlock(ModbusSequentialDataBlock):
+    def setValues(self, address, values):
+        global last_coil_write_ts
+        last_coil_write_ts = time.time()
+        return super().setValues(address, values)
+
 
 ####################################### START - Запрос на последнюю операцию ###############################
 def check_last_operation_is_idle():
@@ -129,18 +146,71 @@ WHERE t.bin_id = b.id;
 
 ####################################### STOP - Обновление таблицы диодов ###############################
 
+# функцию, которая обновляет LED только по списку bin_id (и только если IDLE)
+def update_led_tasks_only_changed(conn, changed_bins: list[int]) -> bool:
+    """
+    Обновляем IH_led_task только для bin_id из changed_bins.
+    Делается ТОЛЬКО если последняя операция IDLE и не закрыта.
+    """
+    if not changed_bins:
+        return False
 
-# Запрос к БД на выборку данных для Modbus:
-SQL_MODBUS = """
-SELECT 
-    id,
-    bin_id,
-    bin_status_id,
-    "Bin_Sensor_status",
-    shelf_id,
-    "Blynk_id"
-FROM public."IH_led_task"
-ORDER BY bin_id;
+    # 1) Проверяем IDLE (в этом же соединении!)
+    sql_last = """
+    SELECT status, finished_at
+    FROM public."IH_Operation"
+    ORDER BY id DESC
+    LIMIT 1;
+    """
+    with conn.cursor() as cur:
+        cur.execute(sql_last)
+        row = cur.fetchone()
+
+        if not row:
+            return False
+
+        status, finished_at = row[0], row[1]
+        if status != "IDLE" or finished_at is not None:
+            return False
+
+        # 2) Защита от блокировок (чтобы не ждать секунды)
+        cur.execute("SET LOCAL lock_timeout = '200ms';")
+        cur.execute("SET LOCAL statement_timeout = '400ms';")
+
+        # 3) Обновляем только нужные строки
+        cur.execute(SQL_UPDATE_LED_BY_BINS, (changed_bins,))
+
+    return True
+
+
+
+
+# Добавь SQL для обновления только нужных bin_id
+SQL_UPDATE_LED_BY_BINS = """
+UPDATE public."IH_led_task" t
+SET
+    shelf_id            = b.shelf_id,
+    "Bin_Sensor_status" = COALESCE(b."Sensor", 0),
+    bin_status_id       = CASE
+                            WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 0
+                            WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 0
+                            ELSE 1
+                          END,
+    "Blynk_id"          = CASE
+                            WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 1
+                            WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 1
+                            ELSE 2
+                          END
+FROM public."IH_bin" b
+WHERE t.bin_id = b.id
+  AND t.bin_id = ANY(%s);
+"""
+
+SQL_REF_ITEMS = """
+SELECT id, ref_item_id
+FROM public."IH_bin"
+WHERE id BETWEEN 1 AND %s
+ORDER BY id;
 """
 
 # --- Конфигурация адресного пространства ---
@@ -170,7 +240,7 @@ WHERE id = %s;
 """
 
 store = ModbusSlaveContext(
-    co=ModbusSequentialDataBlock(0, [0] * 2000),                  # coils
+    co=WatchdogCoilBlock(0, [0] * 2000),                  # coils
     hr=ModbusSequentialDataBlock(HR_START, [0] * HR_SIZE),        # holding registers
 )
 context = ModbusServerContext(slaves={UNIT: store}, single=False)
@@ -183,127 +253,111 @@ def run_server():
 
 def modbus_cycle():
     counter = 0
+    last_bits_str = None
+    last_change_ts = time.time()
+    last_print_ts = 0.0
+
+    # кэш ref_item_id
+    ref_cache = {}          # bin_id -> ref_item_id (None/число)
+    last_ref_fetch = 0.0
+    REF_FETCH_EVERY = 0.3   # сек (можно 0.5)
+
     while True:
         counter += 1
+        now = time.time()
 
         # Технические регистры
-        val0 = 100
-        val1 = counter
         with MODBUS_LOCK:
-            context[UNIT].setValues(3, 0, [val0, val1])
+            context[UNIT].setValues(3, 0, [100, counter])
 
+        sensor_debug = {}
+        changed_bins = []
 
-        sensor_debug = {}  # для печати массива сенсоров
-
-        # 2) Основная работа: читаем IH_led_task, пишем в Modbus и обновляем Sensor в IH_bin
         try:
             with psycopg2.connect(**DB_CONFIG) as conn:
-                # --- читаем строки для Modbus ---
-                with conn.cursor() as cur:
-                    cur.execute(SQL_MODBUS)
-                    rows = cur.fetchall()
+                # 1) Подчитываем ref_item_id редко (чтобы LED считать сразу)
+                if now - last_ref_fetch >= REF_FETCH_EVERY:
+                    with conn.cursor() as cur:
+                        cur.execute(SQL_REF_ITEMS, (MAX_BIN_ID,))
+                        ref_cache = {bid: ref for (bid, ref) in cur.fetchall()}
+                    last_ref_fetch = now
 
-                rows = rows[:MAX_ROWS]
-
-                # Очистим рабочую зону (все блоки с 10-го регистра и до конца)
+                # 2) Снимаем слепок coils одним чтением (быстро)
                 with MODBUS_LOCK:
-                    context[UNIT].setValues(3, BASE_ADDR, [0] * (HR_SIZE - BASE_ADDR))
+                    coils_snapshot = context[UNIT].getValues(1, COIL_BASE, MAX_BIN_ID)
 
-                # --- обновляем Sensor + пишем в Modbus ---
+                # 3) Пишем HR (LED) + обновляем Sensor в БД
                 with conn.cursor() as cur_upd:
-                    for r in rows:
-                        # r:
-                        # 0 - id
-                        # 1 - bin_id
-                        # 2 - bin_status_id
-                        # 3 - Bin_Sensor_status
-                        # 4 - shelf_id
-                        # 5 - Blynk_id
+                    for bin_id_raw in range(1, MAX_BIN_ID + 1):
+                        start_addr = BASE_ADDR + (bin_id_raw - 1) * ROW_WIDTH
 
-                        bin_id_raw = r[1]
-                        if bin_id_raw is None:
-                            continue
+                        # --- Сенсор ---
+                        sensor_raw = coils_snapshot[bin_id_raw - 1]
+                        sensor_val = 1 if sensor_raw else 0
+                        sensor_debug[bin_id_raw] = (sensor_raw, sensor_val)
 
-                        if bin_id_raw < 1 or bin_id_raw > MAX_BIN_ID:
-                            continue
+                        # --- ref_item_id (из кэша) ---
+                        ref_item_id = ref_cache.get(bin_id_raw)
 
-                        # Адрес блока для конкретной ячейки:
-                        row_index = bin_id_raw - 1
-                        start_addr = BASE_ADDR + row_index * ROW_WIDTH
+                        # --- Быстрый расчёт "OK/ERROR" как в твоём SQL ---
+                        ok = ((sensor_val == 1 and ref_item_id is not None) or
+                              (sensor_val == 0 and ref_item_id is None))
 
-                        bin_id = _to_int16(bin_id_raw)
-                        led_color = _to_int16(r[2] if r[2] is not None else 0)
-                        blink = _to_int16(r[5] if r[5] is not None else 0)
-                        shelf_id = _to_int16(r[4] if r[4] is not None else 0)
+                        # ВАЖНО: сопоставь с твоим ПЛК:
+                        # bin_status_id (LED_COLOR): 0=зелёный (OK), 1=красный (ERROR)
+                        # Blynk_id (BLINK): 1=постоянно, 2=мигает
+                        led_color = 0 if ok else 1
+                        blink = 1 if ok else 2
 
-                        # Схема (10 регистров на ячейку):
-                        # +0 LED_COLOR (bin_status_id)
-                        # +1 BLINK ("Blynk_id")
-                        # +2 BIN_ID
-                        row_data = [
-                            led_color,
-                            blink,
-                            bin_id,
-                        ]
+                        row_data = [_to_int16(led_color), _to_int16(blink), _to_int16(bin_id_raw)]
 
-                        # Записываем данные ячейки в её блок
+                        # ✅ пишем HR быстро (короткий lock)
                         with MODBUS_LOCK:
                             context[UNIT].setValues(3, start_addr, row_data)
 
-                        # Читаем значение от ПЛК (если хочешь использовать HR +6 — оставляем как debug)
-                        msu_mes = context[UNIT].getValues(3, start_addr + 6, 1)[0]
-                        msu_mes_int = _to_int16(msu_mes)
-
-                        # --- Читаем сенсор из COILS (функция 1), адрес 1000+ ---
-                        # bin 1 -> coil 1000
-                        # bin 2 -> coil 1001
-                        coil_addr = COIL_BASE + (bin_id_raw - 1)
-
-                        sensor_raw = context[UNIT].getValues(1, coil_addr, 1)[0]  # функция 1 = Coils
-                        sensor_val = 1 if sensor_raw else 0
-
-
-                        sensor_debug[bin_id_raw] = (sensor_raw, sensor_val)
-
-                        # Пишем в IH_bin."Sensor"
+                        # ✅ Sensor в БД пишем всегда
                         cur_upd.execute(SQL_UPDATE_SENSOR, (sensor_val, bin_id_raw))
 
-                        # DEBUG по ячейке
-                        print(
-                            f"[WRITE] bin_id={bin_id}  "
-                            f"addr={start_addr}-{start_addr+len(row_data)-1}  "
-                            f"data={row_data}  HR+6={msu_mes_int}"
-                        )
-                        print(
-                            f"[INFO] BIN={bin_id} LED={led_color} BLINK={blink} "
-                            f"coil={coil_addr} RAW={sensor_raw} Sensor={sensor_val}"
-                        )
-                        conn.commit()
-                        
-            
+                # 4) changed_bins (по сенсорам)
+                for bid in range(1, MAX_BIN_ID + 1):
+                    new_val = sensor_debug.get(bid, (0, 0))[1]
+                    old_val = prev_sensor.get(bid)
+                    if old_val is None or old_val != new_val:
+                        changed_bins.append(bid)
+                    prev_sensor[bid] = new_val
+
+                # 5) Обновляем IH_led_task только если IDLE и только changed_bins
+                if changed_bins:
+                    try:
+                        updated = update_led_tasks_only_changed(conn, changed_bins)
+                        if updated:
+                            print(f"[LED_TASK_DB] changed_bins={changed_bins}")
+                    except Exception as e:
+                        print("[DB ERROR] update_led_tasks_only_changed:", e)
+
+                conn.commit()
 
         except Exception as e:
             print("[DB ERROR]", e)
 
-        # 2.1 Печатаем массив сенсоров по всем bin_id в виде [0101010000]
-        bits = []
-        for bid in range(1, MAX_BIN_ID + 1):
-            if bid in sensor_debug:
-                bits.append(str(sensor_debug[bid][1]))  # нормализованный Sensor (0/1)
-            else:
-                bits.append("0")  # если по какой-то причине не было данных
-        print(f"[SENSORS] [{' '.join(bits)}]")
+        # Печать сенсоров
+        bits_str = ''.join(str(sensor_debug.get(bid, (0, 0))[1]) for bid in range(1, MAX_BIN_ID + 1))
 
-        # 3) После того как Sensor обновлён — обновляем цвета в IH_led_task ТОЛЬКО если операция IDLE и не закрыта
-        update_task_color_by_sensor_if_idle()
+        if bits_str != last_bits_str:
+            last_bits_str = bits_str
+            last_change_ts = now
 
-        # Отладка тех. регистров
-        val2, val3 = context[UNIT].getValues(3, 0, 2)
-        print(f"[WRITE] R0={val0} R1={val1}   [READ] R0={val2} R1={val3}")
+        if now - last_print_ts >= WATCHDOG_LOG_EVERY:
+            age = now - last_coil_write_ts
+            print(f"[SENSORS] {bits_str}  last_write={age:.1f}s  cnt={counter}")
+            last_print_ts = now
 
-        update_task_color_by_sensor_if_idle()
+        if (now - last_coil_write_ts) >= WATCHDOG_STALE_SEC:
+            print(f"[WATCHDOG] no coil writes for {now-last_coil_write_ts:.1f}s -> restarting process")
+            os._exit(3)
 
-        time.sleep(0.3)
+        time.sleep(0.05 if changed_bins else 0.3)
+
 
 
 if __name__ == "__main__":

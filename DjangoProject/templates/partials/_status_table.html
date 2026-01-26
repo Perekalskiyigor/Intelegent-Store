@@ -1,0 +1,27 @@
+<table class="table table-bordered table-sm align-middle text-center warehouse-table">
+  <thead class="table-light">
+    <tr>
+      <th>Полка</th>
+      {% for n in cols %}
+        <th>{{ n }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for row in rows %}
+      <tr>
+        <th scope="row">Полка {{ row.shelf_id }}</th>
+        {% for cell in row.cells %}
+          <td class="{{ cell.css }}">
+            <span title="{{ cell.text }}">{{ cell.text }}</span>
+          </td>
+        {% endfor %}
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="{{ cols|length|add:'1' }}">Нет данных</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

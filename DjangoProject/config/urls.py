@@ -10,7 +10,17 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('inhra-settings/', views.inhra_settings, name='inhra-settings'),
     path('status/', views.status_view, name='status'),
+    path("status/partial/", views.status_partial, name="status_partial"), # Таблица с ячейками
     path('about/', TemplateView.as_view(template_name='about.html'), name='about'),
+    path('insert/', TemplateView.as_view(template_name='insert.html'), name='insert'),
+    
+    path("logs/partial/", views.logs_partial, name="logs_partial"),
+
+    # Кнопки
+    path("ops/start-placement/", views.start_placement, name="start_placement"),
+    path("logs/partial/", views.logs_partial, name="logs_partial"),
+
+
 
     path("warehouses/action/", views.warehouse_action, name="warehouse_action"),
     path("warehouses/add/", views.WarehouseCreateView.as_view(), name="warehouse_create"),

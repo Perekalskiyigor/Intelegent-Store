@@ -1030,6 +1030,7 @@ if __name__ == "__main__":
 
     if not placement_res.get("ok"):
         print("[FATAL] Не удалось открыть операцию размещения. Выходим.")
+
         # на всякий случай попробуем открыть IDLE, чтобы система не осталась без операции
         idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
         print("[OPEN_IDLE_AFTER_FAIL]", idle_res)

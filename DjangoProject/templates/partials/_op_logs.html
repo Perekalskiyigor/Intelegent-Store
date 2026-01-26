@@ -1,0 +1,7 @@
+{% for l in logs %}
+  <div class="small">
+    {{ l.id }} — {{ l.created_at }} — {{ l.operation }} — {{ l.source }} — {{ l.message }} {% if l.user %} ({{ l.user }}){% endif %}
+  </div>
+{% empty %}
+  <div class="text-muted small">Логов нет</div>
+{% endfor %}
