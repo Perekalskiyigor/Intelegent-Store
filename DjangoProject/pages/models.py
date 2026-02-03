@@ -1,5 +1,5 @@
 from django.db import models
-
+import uuid
 
 # ====== Справочники ======
 
@@ -195,3 +195,48 @@ class OpLog(models.Model):
         managed = False
         db_table = 'IH_LOG'   # ← ВАЖНО: убери кавычки тут
         ordering = ["id"]
+
+# Файлы
+class IHFileSelect(models.Model):
+    class Status(models.TextChoices):
+        UPLOADED = "uploaded", "uploaded"
+        PARSED   = "parsed", "parsed"
+        ACTIVE   = "active", "active"
+        ERROR    = "error", "error"
+        ARCHIVED = "archived", "archived"
+
+    # --- поля как в твоём SELECT ---
+    original_name = models.TextField()
+    sha256 = models.CharField(max_length=64, blank=True, null=True)     # char(64)
+    size_bytes = models.BigIntegerField()
+
+    uploaded_by = models.TextField(blank=True, null=True)
+    workstation_id = models.TextField(blank=True, null=True)
+
+    status = models.CharField(
+        max_length=16,
+        choices=Status.choices,
+        default=Status.UPLOADED,
+    )
+
+    error_text = models.TextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    parsed_at = models.DateTimeField(blank=True, null=True)
+
+    uid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    stored_path = models.TextField(blank=True, null=True)
+
+    class Meta:
+        db_table = 'IH_File_Select'   # Django сам добавит schema public
+        verbose_name = "IH File Select"
+        verbose_name_plural = "IH File Select"
+        indexes = [
+            models.Index(fields=["status"]),
+            models.Index(fields=["created_at"]),
+            models.Index(fields=["uid"]),
+            models.Index(fields=["sha256"]),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.original_name} ({self.status})"

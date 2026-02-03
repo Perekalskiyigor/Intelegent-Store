@@ -16,7 +16,7 @@
     data-sidebar-position="fixed" data-header-position="fixed">
 
     <!--  App Topstrip -->
-        {% include "includes/header.html" %}
+          {% include "includes/header.html" %}
     <!-- Sidebar Start -->
     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
@@ -97,17 +97,30 @@
         </nav>
       </header>
       <!--  Header End -->
+
+     
       <div class="body-wrapper-inner">
+
+        
           <!-- ТАБЛИЦА СОСТОЯНИЙ -->
           
             <div class="container-fluid">
-              <div class="card">
-                <div class="card-body">
+            <div class="card">
+              <div class="card-body">
+
+                <!-- БЛОК УПРАВЛЕНИЯ + ПОДСКАЗКИ -->
+                <div class="mb-3 p-3 border rounded">
                   <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div>
-                      <h4 class="card-title mb-1">Схема склада</h4>
-                      <p class="mb-0 text-muted">100 строк × 10 столбцов. Пустая — жёлтая, занятая — зелёная, свободная — белая. Красная ошибка</p>
+                      <h4 class="card-title mb-1">Управление инвентаризацией</h4>
+                      <p class="mb-2 text-muted">Запуск операции инвентаризации и вывод подсказок.</p>
+
+                      <div class="d-flex gap-2 flex-wrap">
+                        <button id="btn-start" class="btn btn-primary">Старт инвентаризации</button>
+                        <button id="btn-clear" class="btn btn-outline-secondary">Очистить лог</button>
+                      </div>
                     </div>
+
                     <div class="d-flex align-items-center gap-3">
                       <div class="d-flex align-items-center gap-2"><span class="badge bg-warning">&nbsp;</span><span class="small text-body">Пустая</span></div>
                       <div class="d-flex align-items-center gap-2"><span class="badge bg-success">&nbsp;</span><span class="small text-body">Занятая</span></div>
@@ -115,13 +128,35 @@
                     </div>
                   </div>
 
-<div class="table-responsive mt-3">
-    <div id="status-table">
-    {% include "partials/_status_table.html" %}
-    </div>
-</div>
+                  
 
-    {% include "includes/footer.html" %}
+                </div>
+
+                <!-- БЛОК ТАБЛИЦЫ СОСТОЯНИЙ -->
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                  <div>
+                    <h4 class="card-title mb-1">Схема склада</h4>
+                    <p class="mb-0 text-muted">100 ячеек на полку. Пустая — белая, занятая — зелёная. Ошибка — красная.</p>
+                  </div>
+                </div>
+
+                <div class="table-responsive mt-3">
+                  <div id="status-table">
+                    {% include "partials/_status_table.html" %}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+              <div id="logbox" class="mt-2 p-2 border rounded" style="height:180px; overflow:auto; background:#fff;">
+              {% include "partials/_op_logs.html" %}
+          </div>
+                    {% include "includes/footer.html" %}
+        </div>
+
+
+
+
 
 
 <script>
@@ -144,5 +179,27 @@
   document.addEventListener("DOMContentLoaded", () => {
     refreshTable();                 // первый запуск сразу
     setInterval(refreshTable, 1000);
+  });
+</script>
+
+<script>
+  async function refreshLogs(){
+    const r = await fetch("{% url 'logs_partial' %}?t=" + Date.now(), {cache:"no-store"});
+    if(!r.ok) return;
+    const html = await r.text();
+    const box = document.getElementById("logbox");
+    box.innerHTML = html;
+    box.scrollTop = box.scrollHeight;
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    refreshLogs();
+    setInterval(refreshLogs, 1000);
+  });
+
+  document.getElementById("btn-start").addEventListener("click", async () => {
+    await fetch("{% url 'start_inventarization' %}", { method: "POST" });
+    // можно сразу обновить лог, чтобы не ждать 1 сек
+    refreshLogs();
   });
 </script>

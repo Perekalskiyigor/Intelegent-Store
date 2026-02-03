@@ -21,9 +21,24 @@ urlpatterns = [
     path("ops/start-placement/", views.start_placement, name="start_placement"),
     path("logs/partial/", views.logs_partial, name="logs_partial"),
 
-    # Кнопки отбора
-    path('selection/', TemplateView.as_view(template_name='selection.html'), name='selection'),
-    path("ops/start-selectionn/", views.start_selection, name="start_selection"),
+    # Отбор
+    path('selection/', TemplateView.as_view(template_name='selection.html'), name='selection'), 
+    path("ops/start-selection/", views.start_selection, name="start_selection"),
+
+    # Инвентаризация
+    path('inventarization/', TemplateView.as_view(template_name='inventarization.html'), name='inventarization'),
+    path("ops/start-inventarization/", views.start_inventarization, name="start_inventarization"),
+
+    # Тех обслуживание
+    path('tech_maintance/', TemplateView.as_view(template_name='tech_maintance.html'), name='tech_maintance'),
+    path("ops/start-tech_maintance/", views.start_tech_maintance, name="start_tech_maintance"),
+
+    #Файлы
+    path("select/", views.selection_page, name="selection_page"),
+    path("select/file/upload/", views.upload_select_file, name="upload_select_file"),
+    # опционально: partial со списком
+    path("select/files/partial/", views.files_select_list, name="files_select_list"),
+
 
     
     path("warehouses/action/", views.warehouse_action, name="warehouse_action"),

@@ -85,129 +85,76 @@ DB_CONFIG = {
 operator = "ivanov"
 workstation_id = "WS-01"
 
-def run_selection(*, file_path: str, file_id: int | None = None, user: str = "system",
-                  workstation_id: int = 1, operator_id: int = 5) -> dict:
-    """
-    file_path      — путь к Excel, который выбрал пользователь в UI (Текущий файл)
-    file_id        — id записи IHFileSelect (если нужно для логов/привязки)
-    user           — username/оператор для логов
-    workstation_id — рабочее место (если у тебя это нужно для open_* операций)
-    operator_id    — id оператора в БД (если start_pick_session ждёт именно id)
-    """
+def run_inventarization() -> dict:
+    print("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
+    pass
 
-    # Единый "оператор" для логов и вызовов
-    operator = user
+    # logInsert.ih_log("СТАРТ Операции отобора", operation="SELECTION", source="selection", user=operator)
 
-    logInsert.ih_log("СТАРТ операции отбора", operation="SELECTION", source="selection", user=operator)
-    logInsert.ih_log(
-        f"run_selection(): файл={file_path}, file_id={file_id}, operator_id={operator_id}, workstation_id={workstation_id}",
-        operation="SELECTION",
-        source="selection",
-        user=operator,
-    )
+    # logInsert.ih_log("Запуск отбора функция open_pick_operation", operation="SELECTION", source="Отбор", user=operator)
+    # open_pick_operation(operator=operator, workstation_id=workstation_id)
 
-    try:
-        # 0) Открываем операцию отбора (подготовка режима)
-        logInsert.ih_log("open_pick_operation()", operation="SELECTION", source="Отбор", user=operator)
-        open_pick_operation(operator=operator, workstation_id=workstation_id)
+    # # 1) стартуем сессию
+    # logInsert.ih_log("Запуск отбора функция start_pick_session", operation="SELECTION", source="Отбор", user=operator)
+    # result = start_pick_session(operator_id=5)
+    # print(result)
+    # if not result["ok"]:
+    #     logInsert.ih_log(f"Ошибка функции start_pick_session Не удалось создать сессию отбора", operation="SELECTION", source="Отбор", user=operator)
+    #     raise RuntimeError("Не удалось создать сессию отбора")
+    
+    # logInsert.ih_log(f"{result}", operation="SELECTION", source="Отбор", user=operator)
 
-        # 1) Стартуем сессию
-        logInsert.ih_log("start_pick_session()", operation="SELECTION", source="Отбор", user=operator)
-        result = start_pick_session(operator_id=operator_id)
+    # session_id = int(result["session_id"])
+    # logInsert.ih_log(f"Создана сессия отбора с id {session_id}", operation="SELECTION", source="Отбор", user=operator)
+    
 
-        if not result.get("ok"):
-            logInsert.ih_log(
-                f"Ошибка start_pick_session: {result}",
-                operation="SELECTION",
-                source="Отбор",
-                user=operator,
-            )
-            raise RuntimeError("Не удалось создать сессию отбора")
+    # # 2) парсим Excel под ЭТУ сессию
+    # logInsert.ih_log(f"Запуск отбора функция parserXLS.load_session_from_excel Получаем даные из Excell", operation="SELECTION", source="Отбор", user=operator)
+    # excel_data = parserXLS.load_session_from_excel(session_id)
+    # print(excel_data)
+    # logInsert.ih_log(f"Получены даные из Excell -- {excel_data}", operation="SELECTION", source="Отбор", user=operator)
 
-        session_id = int(result["session_id"])
-        logInsert.ih_log(f"Создана сессия отбора id={session_id}", operation="SELECTION", source="Отбор", user=operator)
+    # # 3) вставляем pick_item
+    # logInsert.ih_log(f"Запуск отбора функция insert_pick_items_from_excel Заполняем таблицу pick_item", operation="SELECTION", source="Отбор", user=operator)
+    # res = insert_pick_items_from_excel(session_id=session_id, excel_rows=excel_data)
+    # print(res)
+    # logInsert.ih_log(f"Выполнено заполнение таблицы сессии отбора pick_item {res}", operation="SELECTION", source="Отбор", user=operator)
 
-        # 2) Парсим Excel ДЛЯ ЭТОЙ сессии (важно: передаём file_path!)
-        logInsert.ih_log(
-            "parserXLS.load_session_from_excel() — читаем Excel",
-            operation="SELECTION",
-            source="Отбор",
-            user=operator,
-        )
-        # ВАЖНО: поменяй сигнатуру парсера, см. ниже
-        excel_data = parserXLS.load_session_from_excel(session_id=session_id, file_path=file_path)
+    # # 4) подбираем bin_id
+    # logInsert.ih_log(f"Запуск отбора функция assign_bins_for_pick_session Назначаем ячеййкки для будущего отбора", operation="SELECTION", source="Отбор", user=operator)
+    # res = assign_bins_for_pick_session(session_id=session_id)
+    # print(res)
+    # logInsert.ih_log(f"Выполнено назнначение ячеек отбора {res}", operation="SELECTION", source="Отбор", user=operator)
 
-        logInsert.ih_log(
-            f"Получены данные из Excel: строк={len(excel_data) if excel_data else 0}",
-            operation="SELECTION",
-            source="Отбор",
-            user=operator,
-        )
+    # # 5) включаем подсветку и ждём извлечения
+    # logInsert.ih_log(f"Запуск отбора функция run_pick_session_led_and_wait включаем подсветку и ждём извлечения", operation="SELECTION", source="Отбор", user=operator)
+    # res = run_pick_session_led_and_wait(session_id=session_id, poll_interval=0.5, timeout_sec=600)
+    # print(res)
+    # logInsert.ih_log(f"Выполнено включение подсветки {res}", operation="SELECTION", source="Отбор", user=operator)
 
-        # 3) Вставляем pick_item
-        logInsert.ih_log(
-            "insert_pick_items_from_excel() — заполняем pick_item",
-            operation="SELECTION",
-            source="Отбор",
-            user=operator,
-        )
-        res = insert_pick_items_from_excel(session_id=session_id, excel_rows=excel_data)
-        logInsert.ih_log(f"pick_item заполнены: {res}", operation="SELECTION", source="Отбор", user=operator)
+    # logInsert.ih_log(f"Запуск отбора функция finalize_pick_session_clear_bins", operation="SELECTION", source="Отбор", user=operator)
+    # res = finalize_pick_session_clear_bins(session_id=session_id)
+    # print(res)
+    # logInsert.ih_log(f"{res}", operation="SELECTION", source="Отбор", user=operator)
 
-        # 4) Назначаем bin_id
-        logInsert.ih_log(
-            "assign_bins_for_pick_session() — назначаем ячейки",
-            operation="SELECTION",
-            source="Отбор",
-            user=operator,
-        )
-        res = assign_bins_for_pick_session(session_id=session_id)
-        logInsert.ih_log(f"Ячейки назначены: {res}", operation="SELECTION", source="Отбор", user=operator)
+    # # 6) и только теперь закрываем сессию
+    # logInsert.ih_log(f"Запуск отбора функция close_pick_session закрываем сессию отбора", operation="SELECTION", source="Отбор", user=operator)
+    # res = close_pick_session(session_id=session_id)
+    # print(res)
+    # logInsert.ih_log(f"{res}", operation="SELECTION", source="Отбор", user=operator)
 
-        # 5) Подсветка и ожидание
-        logInsert.ih_log(
-            "run_pick_session_led_and_wait() — подсветка и ожидание",
-            operation="SELECTION",
-            source="Отбор",
-            user=operator,
-        )
-        res = run_pick_session_led_and_wait(session_id=session_id, poll_interval=0.5, timeout_sec=600)
-        logInsert.ih_log(f"Ожидание завершено: {res}", operation="SELECTION", source="Отбор", user=operator)
+    # logInsert.ih_log(f"Переход в режим IDLE", operation="SELECTION", source="Отбор", user=operator)
+    # idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
+    # print("[OPEN_IDLE]", idle_res)
 
-        # 6) Финализация
-        logInsert.ih_log(
-            "finalize_pick_session_clear_bins() — очистка ячеек",
-            operation="SELECTION",
-            source="Отбор",
-            user=operator,
-        )
-        res = finalize_pick_session_clear_bins(session_id=session_id)
-        logInsert.ih_log(f"Очистка ячеек: {res}", operation="SELECTION", source="Отбор", user=operator)
 
-        # 7) Закрываем сессию
-        logInsert.ih_log("close_pick_session() — закрываем сессию", operation="SELECTION", source="Отбор", user=operator)
-        res = close_pick_session(session_id=session_id)
-        logInsert.ih_log(f"Сессия закрыта: {res}", operation="SELECTION", source="Отбор", user=operator)
-
-        logInsert.ih_log("ФИНИШ операции отбора", operation="SELECTION", source="selection", user=operator)
-        return {"ok": True, "session_id": session_id}
-
-    except Exception as e:
-        logInsert.ih_log(f"ОШИБКА операции отбора: {e}", operation="SELECTION", source="selection", user=operator)
-        raise
-
-    finally:
-        # Всегда возвращаемся в IDLE, даже если упали
-        try:
-            logInsert.ih_log("Переход в режим IDLE", operation="SELECTION", source="Отбор", user=operator)
-            idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
-            logInsert.ih_log(f"[OPEN_IDLE] {idle_res}", operation="SELECTION", source="Отбор", user=operator)
-        except Exception as e2:
-            logInsert.ih_log(f"Ошибка возврата в IDLE: {e2}", operation="SELECTION", source="Отбор", user=operator)
+    
+    # logInsert.ih_log("ФИНИШ Операции отбора", operation="SELECTION", source="selection", user="ivanov")
+    # return {"ok": True}
 
 
 
-            
+
 ####################1. Открываем операцию забора
 def open_pick_operation(operator: str, workstation_id: str) -> dict:
     """

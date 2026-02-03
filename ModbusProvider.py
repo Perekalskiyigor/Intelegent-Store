@@ -72,60 +72,63 @@ def check_last_operation_is_idle():
 
 ####################################### START - Обновление таблицы диодов ###############################
 def update_task_color_by_sensor_if_idle():
-    """
-    Пока последняя операция IDLE и не закрыта — обновляем режимы диодов в IH_led_task
-    по данным из IH_bin (основная таблица).
-
-    Связь: IH_led_task.bin_id = IH_bin.id
-
-    Логика:
-      - если IH_bin."Sensor" = 1 AND IH_bin.ref_item_id IS NOT NULL:
-            IH_led_task.bin_status_id = 0
-            IH_led_task."Blynk_id"    = 1
-      - иначе:
-            IH_led_task.bin_status_id = 1
-            IH_led_task."Blynk_id"    = 2
-
-    Плюс всегда обновляем:
-      - IH_led_task.shelf_id = IH_bin.shelf_id
-      - IH_led_task."Bin_Sensor_status" = IH_bin."Sensor"
-    """
     is_idle, op_id, workstation_id = check_last_operation_is_idle()
     if op_id is None or not is_idle:
         return False, op_id
 
     sql = """
     UPDATE public."IH_led_task" t
-SET
-    shelf_id            = b.shelf_id,
-    "Bin_Sensor_status" = COALESCE(b."Sensor", 0),
-    bin_status_id       = CASE
-                            WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 0
-                            WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 0
-                            ELSE 1
-                          END,
-    "Blynk_id"          = CASE
-                            WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 1
-                            WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 1
-                            ELSE 2
-                          END
-FROM public."IH_bin" b
-WHERE t.bin_id = b.id;
+    SET
+        shelf_id            = b.shelf_id,
+        "Bin_Sensor_status" = COALESCE(b."Sensor", 0),
+        bin_status_id       = CASE
+                                WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 0
+                                WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 0
+                                ELSE 1
+                              END,
+        "Blynk_id"          = CASE
+                                WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 1
+                                WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 1
+                                ELSE 2
+                              END
+    FROM public."IH_bin" b
+    WHERE t.bin_id = b.id
+      AND (
+        t.shelf_id IS DISTINCT FROM b.shelf_id OR
+        t."Bin_Sensor_status" IS DISTINCT FROM COALESCE(b."Sensor", 0) OR
+        t.bin_status_id IS DISTINCT FROM CASE
+                                WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 0
+                                WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 0
+                                ELSE 1
+                              END OR
+        t."Blynk_id" IS DISTINCT FROM CASE
+                                WHEN b."Sensor" = 1 AND b.ref_item_id IS NOT NULL THEN 1
+                                WHEN b."Sensor" = 0 AND b.ref_item_id IS NULL     THEN 1
+                                ELSE 2
+                              END
+      )
+    RETURNING t.bin_id, t.bin_status_id, t."Blynk_id", t."Bin_Sensor_status";
     """
 
     try:
         with psycopg2.connect(**DB_CONFIG) as conn:
             with conn.cursor() as cur:
                 cur.execute(sql)
-                updated = cur.rowcount
+                changed = cur.fetchall()
             conn.commit()
 
-        print(f"[LED] op_id={op_id} updated_rows={updated}")
+        # Печатаем только факт изменений
+        if changed:
+            # changed: [(bin_id, bin_status_id, blynk_id, sensor_status), ...]
+            for (bin_id, bin_status_id, blynk_id, sensor_status) in changed:
+                print(f"[LED_TASK] bin={bin_id} led={bin_status_id} blink={blynk_id} sensor={sensor_status} (op_id={op_id})")
+
         return True, op_id
 
     except Exception as e:
         print("[DB ERROR] update_task_color_by_sensor_if_idle:", e)
         return False, op_id
+
 
 ####################################### STOP - Обновление таблицы диодов ###############################
 
@@ -182,126 +185,103 @@ def run_server():
 
 
 def modbus_cycle():
+    # --- Кеши чтобы писать только изменения ---
+    LAST_HR = {}       # bin_id_raw -> tuple(row_data)
+    LAST_SENSOR = {}   # bin_id_raw -> 0/1
     counter = 0
     while True:
         counter += 1
 
-        # Технические регистры
+        # Технические регистры (можно тоже писать только при изменении, но это мелочь)
         val0 = 100
         val1 = counter
         with MODBUS_LOCK:
             context[UNIT].setValues(3, 0, [val0, val1])
 
+        sensor_debug = {}
 
-        sensor_debug = {}  # для печати массива сенсоров
-
-        # 2) Основная работа: читаем IH_led_task, пишем в Modbus и обновляем Sensor в IH_bin
         try:
             with psycopg2.connect(**DB_CONFIG) as conn:
-                # --- читаем строки для Modbus ---
                 with conn.cursor() as cur:
                     cur.execute(SQL_MODBUS)
                     rows = cur.fetchall()
 
                 rows = rows[:MAX_ROWS]
 
-                # Очистим рабочую зону (все блоки с 10-го регистра и до конца)
-                with MODBUS_LOCK:
-                    context[UNIT].setValues(3, BASE_ADDR, [0] * (HR_SIZE - BASE_ADDR))
+                # --- обновляем Sensor + пишем в Modbus только изменения ---
+                updates = []  # [(sensor_val, bin_id_raw), ...]
 
-                # --- обновляем Sensor + пишем в Modbus ---
                 with conn.cursor() as cur_upd:
                     for r in rows:
-                        # r:
-                        # 0 - id
-                        # 1 - bin_id
-                        # 2 - bin_status_id
-                        # 3 - Bin_Sensor_status
-                        # 4 - shelf_id
-                        # 5 - Blynk_id
-
                         bin_id_raw = r[1]
                         if bin_id_raw is None:
                             continue
-
                         if bin_id_raw < 1 or bin_id_raw > MAX_BIN_ID:
                             continue
 
-                        # Адрес блока для конкретной ячейки:
                         row_index = bin_id_raw - 1
                         start_addr = BASE_ADDR + row_index * ROW_WIDTH
 
                         bin_id = _to_int16(bin_id_raw)
                         led_color = _to_int16(r[2] if r[2] is not None else 0)
                         blink = _to_int16(r[5] if r[5] is not None else 0)
-                        shelf_id = _to_int16(r[4] if r[4] is not None else 0)
 
-                        # Схема (10 регистров на ячейку):
-                        # +0 LED_COLOR (bin_status_id)
-                        # +1 BLINK ("Blynk_id")
-                        # +2 BIN_ID
-                        row_data = [
-                            led_color,
-                            blink,
-                            bin_id,
-                        ]
+                        # 3 регистра на ячейку
+                        row_data = (led_color, blink, bin_id)
 
-                        # Записываем данные ячейки в её блок
-                        with MODBUS_LOCK:
-                            context[UNIT].setValues(3, start_addr, row_data)
+                        # --- HR: пишем только если изменилось ---
+                        if LAST_HR.get(bin_id_raw) != row_data:
+                            with MODBUS_LOCK:
+                                context[UNIT].setValues(3, start_addr, list(row_data))
+                            LAST_HR[bin_id_raw] = row_data
+                            # print(f"[HR] BIN={bin_id_raw} addr={start_addr} data={row_data}")
 
-                        # Читаем значение от ПЛК (если хочешь использовать HR +6 — оставляем как debug)
-                        msu_mes = context[UNIT].getValues(3, start_addr + 6, 1)[0]
-                        msu_mes_int = _to_int16(msu_mes)
-
-                        # --- Читаем сенсор из COILS (функция 1), адрес 1000+ ---
-                        # bin 1 -> coil 1000
-                        # bin 2 -> coil 1001
+                        # --- coils -> sensor ---
                         coil_addr = COIL_BASE + (bin_id_raw - 1)
+                        with MODBUS_LOCK:
+                            sensor_raw = context[UNIT].getValues(1, coil_addr, 1)[0]
 
-                        sensor_raw = context[UNIT].getValues(1, coil_addr, 1)[0]  # функция 1 = Coils
                         sensor_val = 1 if sensor_raw else 0
-
-
                         sensor_debug[bin_id_raw] = (sensor_raw, sensor_val)
 
-                        # Пишем в IH_bin."Sensor"
-                        cur_upd.execute(SQL_UPDATE_SENSOR, (sensor_val, bin_id_raw))
+                        # --- DB: пишем Sensor только если изменился ---
+                        if LAST_SENSOR.get(bin_id_raw) != sensor_val:
+                            LAST_SENSOR[bin_id_raw] = sensor_val
+                            updates.append((sensor_val, bin_id_raw))
+                            # print(f"[SENSOR] BIN={bin_id_raw} coil={coil_addr} RAW={sensor_raw} -> {sensor_val}")
 
-                        # DEBUG по ячейке
-                        print(
-                            f"[WRITE] bin_id={bin_id}  "
-                            f"addr={start_addr}-{start_addr+len(row_data)-1}  "
-                            f"data={row_data}  HR+6={msu_mes_int}"
-                        )
-                        print(
-                            f"[INFO] BIN={bin_id} LED={led_color} BLINK={blink} "
-                            f"coil={coil_addr} RAW={sensor_raw} Sensor={sensor_val}"
-                        )
+                        # DEBUG msu_mes (по желанию)
+                        # msu_mes_int = _to_int16(msu_mes)
+                        # print(f"[DBG] BIN={bin_id_raw} HR+6={msu_mes_int}")
+
+                    if updates:
+                        cur_upd.executemany(SQL_UPDATE_SENSOR, updates)
                         conn.commit()
-                        
-            
+                        print(f"[DB] updated Sensors: {len(updates)}")
+                    else:
+                        # без commit тоже норм, но можно и не делать ничего
+                        pass
 
         except Exception as e:
             print("[DB ERROR]", e)
 
-        # 2.1 Печатаем массив сенсоров по всем bin_id в виде [0101010000]
+        # Печать массива сенсоров (как было)
         bits = []
         for bid in range(1, MAX_BIN_ID + 1):
             if bid in sensor_debug:
-                bits.append(str(sensor_debug[bid][1]))  # нормализованный Sensor (0/1)
+                bits.append(str(sensor_debug[bid][1]))
             else:
-                bits.append("0")  # если по какой-то причине не было данных
-        print(f"[SENSORS] [{' '.join(bits)}]")
+                # если PLC не писал coil или строка не пришла из led_task
+                bits.append(str(LAST_SENSOR.get(bid, 0)))
+        #print(f"[SENSORS] [{' '.join(bits)}]")
 
-        # 3) После того как Sensor обновлён — обновляем цвета в IH_led_task ТОЛЬКО если операция IDLE и не закрыта
+        # Обновляем IH_led_task (лучше тоже сделать "только изменения" через WHERE IS DISTINCT FROM, но пока оставляем)
         update_task_color_by_sensor_if_idle()
 
-        # Отладка тех. регистров
-        val2, val3 = context[UNIT].getValues(3, 0, 2)
-        print(f"[WRITE] R0={val0} R1={val1}   [READ] R0={val2} R1={val3}")
-
-        update_task_color_by_sensor_if_idle()
+        # Тех регистры
+        with MODBUS_LOCK:
+            val2, val3 = context[UNIT].getValues(3, 0, 2)
+        # print(f"[WRITE] R0={val0} R1={val1}   [READ] R0={val2} R1={val3}")
 
         time.sleep(0.3)
 

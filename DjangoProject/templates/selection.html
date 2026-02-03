@@ -16,31 +16,7 @@
     data-sidebar-position="fixed" data-header-position="fixed">
 
     <!--  App Topstrip -->
-    <div class="app-topstrip bg-dark py-6 px-3 w-100 d-lg-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center justify-content-center gap-5 mb-2 mb-lg-0">
-        <a class="d-flex justify-content-center" href="#">
-          <img src="assets/images/logos/logo-wrappixel.svg" alt="" width="150">
-        </a>
-
-        
-      </div>
-
-      <div class="d-lg-flex align-items-center gap-2">
-        <h3 class="text-white mb-2 mb-lg-0 fs-5 text-center">Check Flexy Premium Version</h3>
-        <div class="d-flex align-items-center justify-content-center gap-2">
-          
-          <div class="dropdown d-flex">
-            <a class="btn btn-primary d-flex align-items-center gap-1 " href="javascript:void(0)" id="drop4"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="ti ti-shopping-cart fs-5"></i>
-              Buy Now
-              <i class="ti ti-chevron-down fs-5"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
+        {% include "includes/header.html" %}
     <!-- Sidebar Start -->
     <aside class="left-sidebar">
       <!-- Sidebar scroll-->
@@ -128,16 +104,77 @@
         
           <!-- ТАБЛИЦА СОСТОЯНИЙ -->
           
-            <div class="container-fluid">
-            <div class="card">
-              <div class="card-body">
+        <div class="container-fluid">
+          <div class="row g-3">
 
-                <!-- БЛОК УПРАВЛЕНИЯ + ПОДСКАЗКИ -->
-                <div class="mb-3 p-3 border rounded">
+            <!-- ОСНОВНАЯ КОЛОНКА -->
+            <div class="col-12">
+
+              <!-- БЛОК: ФАЙЛ ОТБОРА (сверху) -->
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title mb-1">Файл отбора</h4>
+                  <p class="text-muted mb-3">Загрузка Excel с перечнем необходимых позиций.</p>
+
+                  <div class="row g-3">
+                    <!-- Загрузка -->
+                    <div class="col-12 col-lg-6">
+                      <div class="p-3 border rounded h-100">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <div class="fw-semibold">Excel-файл</div>
+                          <span id="xlsx-status" class="badge bg-secondary">нет файла</span>
+                        </div>
+
+                        <input id="xlsx-input" type="file" class="form-control" accept=".xlsx" />
+
+                        <div class="d-flex gap-2 mt-2">
+                          <button id="btn-upload-xlsx" class="btn btn-outline-primary">
+                            Загрузить
+                          </button>
+                          <button id="btn-clear-xlsx" class="btn btn-outline-secondary">
+                            Сбросить
+                          </button>
+                        </div>
+
+                        <div class="small text-muted mt-2">
+                          Разрешён формат: <b>.xlsx</b>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Текущий файл -->
+                    <div class="col-12 col-lg-6">
+                      <div class="p-3 border rounded h-100">
+                        <div class="fw-semibold mb-2">Текущий файл</div>
+
+                        <div class="small">
+                          <div class="d-flex justify-content-between">
+                            <span class="text-muted">Имя:</span>
+                            <span id="current-xlsx-name">{% if current_file %}{{ current_file.original_name }}{% else %}—{% endif %}</span>
+                          </div>
+                          <div class="d-flex justify-content-between">
+                            <span class="text-muted">Загружен:</span>
+                            <span id="current-xlsx-time">—</span>
+                          </div>
+                        </div>
+
+                        <div class="mt-3 small text-muted">
+                          (позже сюда можно вывести количество позиций из файла)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- БЛОК: УПРАВЛЕНИЕ ОТБОРОМ -->
+              <div class="card mt-3">
+                <div class="card-body">
                   <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div>
                       <h4 class="card-title mb-1">Управление отбором</h4>
-                      <p class="mb-2 text-muted">Запуск операции отбора и вывод подсказок.</p>
+                      <p class="mb-2 text-muted">Запуск операции и подсказки.</p>
 
                       <div class="d-flex gap-2 flex-wrap">
                         <button id="btn-start" class="btn btn-primary">Старт отбора</button>
@@ -146,35 +183,42 @@
                     </div>
 
                     <div class="d-flex align-items-center gap-3">
-                      <div class="d-flex align-items-center gap-2"><span class="badge bg-warning">&nbsp;</span><span class="small text-body">Пустая</span></div>
-                      <div class="d-flex align-items-center gap-2"><span class="badge bg-success">&nbsp;</span><span class="small text-body">Занятая</span></div>
-                      <div class="d-flex align-items-center gap-2"><span class="badge bg-danger">&nbsp;</span><span class="small text-body">Ошибка</span></div>
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-warning">&nbsp;</span><span class="small text-body">Пустая</span>
+                      </div>
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-success">&nbsp;</span><span class="small text-body">Занятая</span>
+                      </div>
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-danger">&nbsp;</span><span class="small text-body">Ошибка</span>
+                      </div>
                     </div>
                   </div>
-
-                  
-
                 </div>
-
-                <!-- БЛОК ТАБЛИЦЫ СОСТОЯНИЙ -->
-                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                  <div>
-                    <h4 class="card-title mb-1">Схема склада</h4>
-                    <p class="mb-0 text-muted">100 ячеек на полку. Пустая — белая, занятая — зелёная. Ошибка — красная.</p>
-                  </div>
-                </div>
-
-                <div class="table-responsive mt-3">
-                  <div id="status-table">
-                    {% include "partials/_status_table.html" %}
-                  </div>
-                </div>
-
               </div>
-            </div>
+
+              <!-- БЛОК: СХЕМА СКЛАДА + ТАБЛИЦА -->
+              <div class="card mt-3">
+                <div class="card-body">
+                  <h4 class="card-title mb-1">Схема склада</h4>
+                  <p class="mb-0 text-muted">100 ячеек на полку. Пустая — белая, занятая — зелёная. Ошибка — красная.</p>
+
+                  <div class="table-responsive mt-3">
+                    <div id="status-table">
+                      {% include "partials/_status_table.html" %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ЛОГ -->
               <div id="logbox" class="mt-2 p-2 border rounded" style="height:180px; overflow:auto; background:#fff;">
-              {% include "partials/_op_logs.html" %}
+                {% include "partials/_op_logs.html" %}
+              </div>
+
+            </div>
           </div>
+          
         </div>
 
 
@@ -223,5 +267,78 @@
     await fetch("{% url 'start_selection' %}", { method: "POST" });
     // можно сразу обновить лог, чтобы не ждать 1 сек
     refreshLogs();
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const statusEl = document.getElementById("xlsx-status");
+    const input = document.getElementById("xlsx-input");
+    const btnUpload = document.getElementById("btn-upload-xlsx");
+    const btnClear = document.getElementById("btn-clear-xlsx");
+
+    const nameEl = document.getElementById("current-xlsx-name");
+    const timeEl = document.getElementById("current-xlsx-time");
+
+    const setStatus = (text, cls) => {
+      if (!statusEl) return;
+      statusEl.textContent = text;
+      statusEl.className = "badge " + cls;
+    };
+
+    btnUpload?.addEventListener("click", async () => {
+      const f = input?.files?.[0];
+      if (!f) return alert("Выбери .xlsx файл");
+
+      setStatus("загрузка...", "bg-warning");
+
+      const fd = new FormData();
+      fd.append("file", f);
+
+      let r;
+      try {
+        r = await fetch("{% url 'upload_select_file' %}", {
+          method: "POST",
+          body: fd
+        });
+      } catch (e) {
+        console.error(e);
+        setStatus("ошибка сети", "bg-danger");
+        alert("Ошибка сети при загрузке");
+        return;
+      }
+
+      if (!r.ok) {
+        const txt = await r.text();
+        console.error("upload failed:", txt);
+        setStatus("ошибка", "bg-danger");
+        alert("Ошибка: " + txt);
+        return;
+      }
+
+      const data = await r.json();
+      console.log("uploaded:", data);
+
+      setStatus("загружен", "bg-success");
+
+      if (nameEl) nameEl.textContent = data.original_name || "—";
+      if (timeEl) timeEl.textContent = data.created_at ? new Date(data.created_at).toLocaleString() : "—";
+    });
+
+    btnClear?.addEventListener("click", () => {
+      if (input) input.value = "";
+      if (nameEl) nameEl.textContent = "—";
+      if (timeEl) timeEl.textContent = "—";
+      setStatus("нет файла", "bg-secondary");
+    });
   });
 </script>
