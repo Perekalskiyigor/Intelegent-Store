@@ -402,57 +402,32 @@ from .models import OpLog
 
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-@ensure_csrf_cookie
-def selection_page(request):
-    current_file = IHFileSelect.objects.order_by("-created_at").first()
-    return render(request, "selection.html", {"current_file": current_file})
-
 @csrf_exempt
+@require_POST
 def start_selection(request):
-    if request.method != "POST":
-        return JsonResponse({"ok": False, "error": "POST required"}, status=405)
+    file_id = request.POST.get("file_id")
+    if not file_id:
+        return HttpResponseBadRequest("file_id is required")
 
-    current_file = IHFileSelect.objects.order_by("-created_at").first()
-    if not current_file:
-        return JsonResponse({"ok": False, "error": "Текущий файл не выбран"}, status=400)
+    obj = IHFileSelect.objects.filter(id=file_id).first()
+    if not obj:
+        return HttpResponseBadRequest("file not found")
 
-    # В зависимости от модели: current_file.file.path / current_file.file_path и т.п.
-    # Ниже — самый частый вариант, если FileField:
-    try:
-        file_path = current_file.file.path
-    except Exception:
-        # если у тебя строковое поле с путем:
-        file_path = getattr(current_file, "file_path", None)
+    abs_path = os.path.join(settings.MEDIA_ROOT, obj.stored_path)
 
-    if not file_path:
-        return JsonResponse({"ok": False, "error": "У текущего файла не найден путь"}, status=400)
-
+    # Тут ты запускаешь свой “скрипт” (синхронно или в отдельном потоке — как у тебя сделано)
     # ленивый импорт — чтобы views.py не падал при старте проекта
     from pages.services.selection import run_selection
-    from pages.services import logInsert
+    run_selection(
+        file_path=abs_path,
+        file_id=obj.id,
+        user=request.user.username if request.user.is_authenticated else "system",
+        workstation_id=1,
+        operator_id=5,
+    )
 
-    user = getattr(request, "user", None)
-    username = getattr(user, "username", None) or "ivanov"
+    return JsonResponse({"ok": True, "started": True, "file_id": obj.id})
 
-    def worker():
-        try:
-            logInsert.ih_log(
-                f"Старт отбора по файлу: {current_file.original_name if hasattr(current_file,'original_name') else current_file} ({file_path})",
-                operation="SELECTION",
-                source="django",
-                user=username,
-            )
-            run_selection(file_path=file_path, file_id=current_file.id, user=username)
-        except Exception as e:
-            logInsert.ih_log(
-                f"Ошибка вызова скрипта отбора из Django view start_selection(): {e}",
-                operation="SELECTION",
-                source="django",
-                user=username,
-            )
-
-    threading.Thread(target=worker, daemon=True).start()
-    return JsonResponse({"ok": True, "file_id": current_file.id})
 
 #############################3кнопка размещения#############################
 

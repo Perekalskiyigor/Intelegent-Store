@@ -223,13 +223,11 @@
 
 
 
-
-
 <script>
+  // ====== (A) Обновление таблицы статуса ======
   async function refreshTable() {
     const url = "{% url 'status_partial' %}?t=" + Date.now(); // анти-кеш 100%
     const r = await fetch(url, { cache: "no-store" });
-
     const html = await r.text();
 
     console.log("partial:", r.status, "len:", html.length, "head:", html.slice(0, 40));
@@ -249,11 +247,13 @@
 </script>
 
 <script>
-  async function refreshLogs(){
-    const r = await fetch("{% url 'logs_partial' %}?t=" + Date.now(), {cache:"no-store"});
-    if(!r.ok) return;
+  // ====== (B) Обновление логов ======
+  async function refreshLogs() {
+    const r = await fetch("{% url 'logs_partial' %}?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) return;
     const html = await r.text();
     const box = document.getElementById("logbox");
+    if (!box) return;
     box.innerHTML = html;
     box.scrollTop = box.scrollHeight;
   }
@@ -262,32 +262,23 @@
     refreshLogs();
     setInterval(refreshLogs, 1000);
   });
-
-  document.getElementById("btn-start").addEventListener("click", async () => {
-    await fetch("{% url 'start_selection' %}", { method: "POST" });
-    // можно сразу обновить лог, чтобы не ждать 1 сек
-    refreshLogs();
-  });
 </script>
 
-
-
-
-
-
-
-
-
-
 <script>
+  // ====== (C) Загрузка XLSX + запоминание file_id, запуск отбора с этим file_id ======
   document.addEventListener("DOMContentLoaded", () => {
-    const statusEl = document.getElementById("xlsx-status");
-    const input = document.getElementById("xlsx-input");
+    const statusEl  = document.getElementById("xlsx-status");
+    const input     = document.getElementById("xlsx-input");
     const btnUpload = document.getElementById("btn-upload-xlsx");
-    const btnClear = document.getElementById("btn-clear-xlsx");
+    const btnClear  = document.getElementById("btn-clear-xlsx");
+    const btnStart  = document.getElementById("btn-start");
 
     const nameEl = document.getElementById("current-xlsx-name");
     const timeEl = document.getElementById("current-xlsx-time");
+
+    // ТУТ хранится текущий выбранный/загруженный файл
+    let currentFileId = null;
+    let currentStoredPath = null; // если вдруг пригодится
 
     const setStatus = (text, cls) => {
       if (!statusEl) return;
@@ -295,6 +286,15 @@
       statusEl.className = "badge " + cls;
     };
 
+    const fmtDate = (iso) => {
+      try {
+        return iso ? new Date(iso).toLocaleString() : "—";
+      } catch {
+        return "—";
+      }
+    };
+
+    // --- Upload XLSX ---
     btnUpload?.addEventListener("click", async () => {
       const f = input?.files?.[0];
       if (!f) return alert("Выбери .xlsx файл");
@@ -308,7 +308,8 @@
       try {
         r = await fetch("{% url 'upload_select_file' %}", {
           method: "POST",
-          body: fd
+          body: fd,
+          cache: "no-store",
         });
       } catch (e) {
         console.error(e);
@@ -328,17 +329,63 @@
       const data = await r.json();
       console.log("uploaded:", data);
 
+      // ВАЖНО: запомнили файл, который выбрал пользователь
+      currentFileId = data.id ?? null;
+      currentStoredPath = data.stored_path ?? null;
+
       setStatus("загружен", "bg-success");
 
       if (nameEl) nameEl.textContent = data.original_name || "—";
-      if (timeEl) timeEl.textContent = data.created_at ? new Date(data.created_at).toLocaleString() : "—";
+      if (timeEl) timeEl.textContent = fmtDate(data.created_at);
     });
 
+    // --- Clear выбранного файла ---
     btnClear?.addEventListener("click", () => {
       if (input) input.value = "";
       if (nameEl) nameEl.textContent = "—";
       if (timeEl) timeEl.textContent = "—";
+
+      currentFileId = null;
+      currentStoredPath = null;
+
       setStatus("нет файла", "bg-secondary");
+    });
+
+    // --- Start selection with currentFileId ---
+    btnStart?.addEventListener("click", async () => {
+      if (!currentFileId) {
+        alert("Сначала загрузи .xlsx файл");
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append("file_id", String(currentFileId));
+
+      let r;
+      try {
+        r = await fetch("{% url 'start_selection' %}", {
+          method: "POST",
+          body: fd,
+          cache: "no-store",
+        });
+      } catch (e) {
+        console.error(e);
+        alert("Ошибка сети при запуске операции");
+        return;
+      }
+
+      if (!r.ok) {
+        const txt = await r.text();
+        console.error("start_selection failed:", txt);
+        alert("Ошибка запуска: " + txt);
+        return;
+      }
+
+      const data = await r.json().catch(() => ({}));
+      console.log("start_selection:", data);
+
+      // можно сразу обновить логи, чтобы не ждать 1 сек
+      refreshLogs();
     });
   });
 </script>

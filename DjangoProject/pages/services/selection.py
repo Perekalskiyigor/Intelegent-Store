@@ -85,8 +85,14 @@ DB_CONFIG = {
 operator = "ivanov"
 workstation_id = "WS-01"
 
-def run_selection(*, file_path: str, file_id: int | None = None, user: str = "system",
-                  workstation_id: int = 1, operator_id: int = 5) -> dict:
+def run_selection(
+    *,
+    file_path: str,
+    file_id: Optional[int] = None,
+    user: str = "system",
+    workstation_id: int = 1,
+    operator_id: int = 5,
+    ) -> dict:
     """
     file_path      — путь к Excel, который выбрал пользователь в UI (Текущий файл)
     file_id        — id записи IHFileSelect (если нужно для логов/привязки)
@@ -207,7 +213,7 @@ def run_selection(*, file_path: str, file_id: int | None = None, user: str = "sy
 
 
 
-            
+
 ####################1. Открываем операцию забора
 def open_pick_operation(operator: str, workstation_id: str) -> dict:
     """
