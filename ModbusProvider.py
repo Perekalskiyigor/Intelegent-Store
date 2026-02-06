@@ -1,5 +1,7 @@
 # pyinstaller --onefile ModbusProvider.py
 
+import os
+import sys
 import time
 import threading
 from pymodbus.server import StartTcpServer
@@ -9,6 +11,11 @@ from pymodbus.datastore import (
     ModbusSequentialDataBlock,
 )
 import psycopg2
+
+# HerartBeat
+HEARTBEAT_COIL = 0          # как у тебя в PLC (смещение 0)
+HEARTBEAT_TIMEOUT = 12.0    # сек (при мигании 5 сек)
+RESTART_COOLDOWN = 30.0     # защита от частых рестартов
 
 MODBUS_LOCK = threading.RLock()
 
@@ -179,9 +186,14 @@ store = ModbusSlaveContext(
 context = ModbusServerContext(slaves={UNIT: store}, single=False)
 
 
-def run_server():
-    print(f"[Modbus] SLAVE на {HOST}:{PORT} (Unit={UNIT}), HR[0..{HR_SIZE-1}]")
-    StartTcpServer(context, address=(HOST, PORT))
+def run_server_forever():
+    while True:
+        try:
+            print(f"[Modbus] START {HOST}:{PORT} Unit={UNIT}")
+            StartTcpServer(context, address=(HOST, PORT))
+        except Exception as e:
+            print("[Modbus SERVER CRASH]", e)
+            time.sleep(1)  # пауза и старт заново
 
 
 def modbus_cycle():
@@ -189,6 +201,30 @@ def modbus_cycle():
     LAST_HR = {}       # bin_id_raw -> tuple(row_data)
     LAST_SENSOR = {}   # bin_id_raw -> 0/1
     counter = 0
+    conn = None
+    #HeartBeat
+    last_hb_raw = None
+    last_hb_change = time.time()
+    last_restart_try = 0.0
+
+    def db_connect():
+        nonlocal conn
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
+        conn = psycopg2.connect(**DB_CONFIG, connect_timeout=2)
+        conn.autocommit = False
+        print("[DB] connected")
+
+    try:
+        db_connect()
+    except Exception as e:
+        print("[DB ERROR] initial connect:", e)
+        # можно не падать: дальше в цикле попробуем переподключиться
+        conn, cur = None, None
+
     while True:
         counter += 1
 
@@ -199,12 +235,20 @@ def modbus_cycle():
             context[UNIT].setValues(3, 0, [val0, val1])
 
         sensor_debug = {}
+        
+        # --- гарантируем, что есть подключение ---
+        if conn is None:
+            try:
+                db_connect()
+            except Exception as e:
+                print("[DB ERROR] reconnect:", e)
+                time.sleep(1)
+                continue
 
         try:
-            with psycopg2.connect(**DB_CONFIG) as conn:
-                with conn.cursor() as cur:
-                    cur.execute(SQL_MODBUS)
-                    rows = cur.fetchall()
+            with conn.cursor() as cur:
+                cur.execute(SQL_MODBUS)
+                rows = cur.fetchall()
 
                 rows = rows[:MAX_ROWS]
 
@@ -262,8 +306,23 @@ def modbus_cycle():
                         # без commit тоже норм, но можно и не делать ничего
                         pass
 
+        except (psycopg2.OperationalError, psycopg2.InterfaceError) as e:
+            print("[DB ERROR] lost connection:", e)
+            try: conn.close()
+            except Exception: pass
+            conn = None
+            time.sleep(0.5)
+            continue
+
         except Exception as e:
-            print("[DB ERROR]", e)
+            print("[DB ERROR] query:", e)
+            try:
+                conn.rollback()
+            except Exception:
+                try: conn.close()
+                except Exception: pass
+                conn = None
+
 
         # Печать массива сенсоров (как было)
         bits = []
@@ -283,12 +342,32 @@ def modbus_cycle():
             val2, val3 = context[UNIT].getValues(3, 0, 2)
         # print(f"[WRITE] R0={val0} R1={val1}   [READ] R0={val2} R1={val3}")
 
+        # --- WATCHDOG PLC -> Python (heartbeat coil) ---
+        now = time.time()
+        with MODBUS_LOCK:
+            hb_raw = context[UNIT].getValues(1, HEARTBEAT_COIL, 1)[0]
+
+        if last_hb_raw is None or hb_raw != last_hb_raw:
+            last_hb_raw = hb_raw
+            last_hb_change = now
+            print(f"[HB] coil{HEARTBEAT_COIL}={hb_raw}")
+
+        dt = now - last_hb_change
+        if dt > HEARTBEAT_TIMEOUT:
+            print(f"[HB LOST] no heartbeat change for {dt:.1f}s -> restarting script")
+
+            if now - last_restart_try > RESTART_COOLDOWN:
+                last_restart_try = now
+                os.execv(sys.executable, [sys.executable] + sys.argv)  # pyinstaller onefile ок
+            else:
+                print("[HB LOST] restart cooldown active")
+
         time.sleep(0.3)
 
 
 if __name__ == "__main__":
     # Запускаем Modbus-сервер в отдельном потоке
-    threading.Thread(target=run_server, daemon=True).start()
+    threading.Thread(target=run_server_forever, daemon=False).start()
 
     # Простой тест вызова (однократный)
     res_check = check_last_operation_is_idle()

@@ -523,7 +523,7 @@ def upload_select_file(request):
     if not f.name.lower().endswith(".xlsx"):
         return HttpResponseBadRequest("only .xlsx allowed")
 
-    # подготовка папки
+    # подготовка папки если нет создаем
     rel_dir = "uploads/xlsx"
     abs_dir = os.path.join(settings.MEDIA_ROOT, rel_dir)
     os.makedirs(abs_dir, exist_ok=True)
@@ -562,6 +562,7 @@ def upload_select_file(request):
     # сохраняем в БД
     obj.save()
 
+    # Отдаем джисон на интерфейс о сохраненном файле
     return JsonResponse({
         "ok": True,
         "id": obj.id,
