@@ -197,6 +197,11 @@ class OpLog(models.Model):
         ordering = ["id"]
 
 # Файлы
+def select_upload_to(instance, filename: str) -> str:
+    # кладём в отдельную папку и даём UUID имя
+    ext = filename.split(".")[-1].lower()
+    return f"uploads/select/{instance.uid}.{ext}"
+
 class IHFileSelect(models.Model):
     class Status(models.TextChoices):
         UPLOADED = "uploaded", "uploaded"
@@ -225,6 +230,7 @@ class IHFileSelect(models.Model):
     parsed_at = models.DateTimeField(blank=True, null=True)
 
     uid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    file = models.FileField(upload_to=select_upload_to, blank=True, null=True)
     stored_path = models.TextField(blank=True, null=True)
 
     class Meta:

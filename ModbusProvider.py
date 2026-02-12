@@ -1,7 +1,6 @@
 # pyinstaller --onefile ModbusProvider.py
-
-import os
 import sys
+import os
 import time
 import threading
 from pymodbus.server import StartTcpServer
@@ -15,7 +14,10 @@ import psycopg2
 # HerartBeat
 HEARTBEAT_COIL = 0          # как у тебя в PLC (смещение 0)
 HEARTBEAT_TIMEOUT = 12.0    # сек (при мигании 5 сек)
-RESTART_COOLDOWN = 30.0     # защита от частых рестартов
+PLC_ALIVE_COIL = 2          # <-- ВОТ ОН: второй coil
+PLC_ALIVE_INIT = 0          # стартовое значение (0 безопаснее)
+
+RESTART_COOLDOWN = 60.0  # секунд, чтобы не уйти в цикл рестартов
 
 MODBUS_LOCK = threading.RLock()
 
@@ -34,6 +36,14 @@ DB_CONFIG = {
     "host": "localhost",
     "port": 5432,
 }
+
+# --- Status in Modbus HR ---
+STATUS_HR_ADDR = 2   # holding register #2 (0-based)
+STATUS_INIT    = 0
+STATUS_OK      = 1
+STATUS_DEGRADED= 2
+STATUS_DB_DOWN = 3
+STATUS_STUCK   = 9   # self-watchdog detected hang
 
 ####################################### START - Запрос на последнюю операцию ###############################
 def check_last_operation_is_idle():
@@ -205,7 +215,40 @@ def modbus_cycle():
     #HeartBeat
     last_hb_raw = None
     last_hb_change = time.time()
-    last_restart_try = 0.0
+    last_restart_try = 0.
+
+
+    # --- helpers ---
+    def set_status_hr(code: int):
+        with MODBUS_LOCK:
+            context[UNIT].setValues(3, STATUS_HR_ADDR, [int(code) & 0xFFFF])
+
+
+    # начальный статус в HR2
+    set_status_hr(STATUS_INIT)
+
+     # --- Self watchdog settings ---
+    MAIN_TICK_TIMEOUT = 5.0  # сек: если цикл не обновлял метку дольше -> считаем завис
+    last_main_tick = time.time()
+
+    def self_watchdog():
+        nonlocal last_main_tick
+        while True:
+            time.sleep(1.0)
+            dt = time.time() - last_main_tick
+            if dt > MAIN_TICK_TIMEOUT:
+                try:
+                    set_status_hr(STATUS_STUCK)
+                    print(f"[SELF WD] main loop stuck for {dt:.1f}s -> hard exit")
+                    time.sleep(0.2)
+                except Exception:
+                    pass
+                os._exit(2)  # внешний Watchdog поднимет чисто
+
+    threading.Thread(target=self_watchdog, daemon=True).start()
+    
+    with MODBUS_LOCK:
+        context[UNIT].setValues(1, PLC_ALIVE_COIL, [PLC_ALIVE_INIT])
 
     def db_connect():
         nonlocal conn
@@ -247,6 +290,8 @@ def modbus_cycle():
 
         try:
             with conn.cursor() as cur:
+                cur.execute("SET statement_timeout = '2000ms';")  # 2s на запрос
+                cur.execute("SET lock_timeout = '1000ms';")       # 1s на ожидание блокировок
                 cur.execute(SQL_MODBUS)
                 rows = cur.fetchall()
 
@@ -353,14 +398,44 @@ def modbus_cycle():
             print(f"[HB] coil{HEARTBEAT_COIL}={hb_raw}")
 
         dt = now - last_hb_change
-        if dt > HEARTBEAT_TIMEOUT:
-            print(f"[HB LOST] no heartbeat change for {dt:.1f}s -> restarting script")
+        hb_lost = dt > HEARTBEAT_TIMEOUT
+        if hb_lost:
+            print(f"[HB LOST] no heartbeat change for {dt:.1f}s -> DEGRADED mode")
 
+            # сигнал PLC что провайдер "не уверен"
+            with MODBUS_LOCK:
+                context[UNIT].setValues(1, PLC_ALIVE_COIL, [0])
+
+            set_status_hr(STATUS_DEGRADED)
+
+            # раз в cooldown делаем мягкий ресет состояния
             if now - last_restart_try > RESTART_COOLDOWN:
                 last_restart_try = now
-                os.execv(sys.executable, [sys.executable] + sys.argv)  # pyinstaller onefile ок
+                LAST_HR.clear()
+                LAST_SENSOR.clear()
+                print("[SOFT RESET] caches cleared")
+
+                try:
+                    if conn:
+                        conn.close()
+                except Exception:
+                    pass
+                conn = None
+        else:
+            # HB есть -> говорим PLC что всё ок
+            with MODBUS_LOCK:
+                context[UNIT].setValues(1, PLC_ALIVE_COIL, [1])
+
+            # если БД сейчас не подключена — отдельный статус
+            if conn is None:
+                set_status_hr(STATUS_DB_DOWN)
             else:
-                print("[HB LOST] restart cooldown active")
+                set_status_hr(STATUS_OK)
+
+
+
+        # --- main loop tick for self-watchdog ---
+        last_main_tick = time.time()
 
         time.sleep(0.3)
 
