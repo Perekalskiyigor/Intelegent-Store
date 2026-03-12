@@ -158,6 +158,66 @@
 
 
 
+<!-- ===== MODAL: ввод количества ===== -->
+<div class="modal fade" id="qtyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title">Введите количество на катушке</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="number" id="qtyInput" class="form-control" placeholder="Введите количество" min="1">
+        <div class="form-text">Тест: сейчас просто проверяем, что модалка открывается.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <button id="btnSendQty" type="button" class="btn btn-primary">Подтвердить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TEST BUTTON (временно) ===== -->
+<button id="btn-test-modal"
+        class="btn btn-warning"
+        style="position:fixed; right:16px; bottom:16px; z-index:9999;">
+  Тест модалки
+</button>
+
+<!-- ===== Bootstrap JS (ОБЯЗАТЕЛЬНО!) ===== -->
+<script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // проверка, что bootstrap есть
+  if (!window.bootstrap || !bootstrap.Modal) {
+    console.error("Bootstrap Modal not available. Проверь путь до bootstrap.bundle.min.js");
+    return;
+  }
+
+  const qtyModalEl = document.getElementById("qtyModal");
+  const qtyModal = new bootstrap.Modal(qtyModalEl, { backdrop: "static", keyboard: false });
+
+  // 1) ПРИНУДИТЕЛЬНО показываем через 1 секунду (для теста)
+  setTimeout(() => qtyModal.show(), 1000);
+
+  // 2) Кнопка теста
+  document.getElementById("btn-test-modal").addEventListener("click", () => {
+    qtyModal.show();
+  });
+
+  // 3) Кнопка "Подтвердить" — просто закрываем (для теста)
+  document.getElementById("btnSendQty").addEventListener("click", () => {
+    const v = document.getElementById("qtyInput").value;
+    console.log("qty =", v);
+    qtyModal.hide();
+  });
+});
+</script>
+
+        
+
 <script>
   async function refreshTable() {
     const url = "{% url 'status_partial' %}?t=" + Date.now(); // анти-кеш 100%

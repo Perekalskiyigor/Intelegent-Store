@@ -3,6 +3,9 @@ from django.urls import path
 from django.views.generic import TemplateView
 from pages import views
 
+# API
+from pages.views import BinDetailView, ReelUpsertView
+
 
 
 urlpatterns = [
@@ -65,4 +68,12 @@ urlpatterns = [
     path("bins/<int:pk>/delete/", views.BinDeleteView.as_view(), name="bin_delete"),
 
     #path("sites/", views.site_list, name="site_list_raw"),
+
+
+    ############################## API JSON ###############################################################
+
+    path("api/v1/bins/<int:id>/", BinDetailView.as_view(), name="bin-detail"),
+    path("api/v1/reels/upsert/", ReelUpsertView.as_view(), name="reels-upsert"),
+
+    ############################## API JSON ###############################################################
 ]

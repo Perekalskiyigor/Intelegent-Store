@@ -10,11 +10,6 @@ import scaner
 Insert = 1   # флаг режима "Размещение" (1 - активен, 0 - выключен)
 current_barcode = None  # сюда сохраним считанный штрихкод299633
 
-299629
-265644
-271517
-299631
-299629
 
 
 # --- Конфигурация БД ---
@@ -566,362 +561,541 @@ def get_available_bin_ids_for_barcode():
 
 
 
-#####################################START  Установка катушки и чтение датчика что она установлена
+#####################################START  ыбрать ячейку по Sensor и включить зелёный мигающий
 # Константы (проверь ID по своей справочной таблице IH_bin_signal):
 COLOR_ID_WHITE = 2   # белый (для доступных ячеек)
 COLOR_ID_GREEN = 3   # зелёный (для выбранной/размещённой)
 BLINK_OFF = 1        # горит постоянно
 BLINK_ON  = 2        # мигает
 
-def placement_step_wait_sensor_and_place(
+def placement_step_choose_bin_by_sensor_and_blink_green(
     available_bins_result: dict,
     barcode_info: dict,
     poll_interval: float = 0.2,
-    place_delay: float = 5.0,
 ) -> dict:
     """
-    Логика:
-
-      1) Есть список подходящих ячеек (bin_ids) от get_available_bin_ids_for_barcode().
-      2) В цикле опрашиваем IH_bin по этим bin_ids, ищем:
-             Sensor = 1 AND ref_item_id IS NULL.
-         Как только нашли:
-             - в IH_led_task по этой ячейке ставим зелёный мигающий
-               (bin_status_id = COLOR_ID_GREEN, Blynk_id = BLINK_ON);
-             - ждём place_delay секунд.
-      3) После ожидания ещё раз читаем IH_bin по выбранной ячейке:
-             если Sensor всё ещё 1 и ref_item_id IS NULL:
-                 - выключаем мигание (Blynk_id = BLINK_OFF, цвет остаётся зелёным);
-                 - записываем ref_item_id = item_id в IH_bin;
-                 - возвращаем успех.
-             иначе:
-                 - считаем, что размещение не подтверждено;
-                 - возвращаем ячейку в режим "доступна" (белый мигающий:
-                   bin_status_id = COLOR_ID_WHITE, Blynk_id = BLINK_ON);
-                 - продолжаем ждать следующего срабатывания Sensor.
+    1) Из списка bin_ids ждём, пока ровно одна ячейка станет Sensor=1 и ref_item_id IS NULL
+    2) Включаем зелёный мигающий на выбранной ячейке (IH_led_task)
+    3) Возвращаем chosen_bin_id и item_id (но ничего в IH_bin НЕ записываем)
     """
-
-    # --- 1. Проверка входных данных ---
     if not available_bins_result or not available_bins_result.get("ok"):
-        return {
-            "ok": False,
-            "bin_id": None,
-            "item_id": None,
-            "updated_bin": False,
-            "updated_led": False,
-            "row_bin": None,
-            "row_led_task": None,
-            "row_led_status": None,
-            "message": "Нет валидного результата поиска свободных ячеек",
-        }
+        return {"ok": False, "message": "Нет валидного результата поиска свободных ячеек"}
 
     bin_ids = available_bins_result.get("bin_ids") or []
     if not bin_ids:
-        return {
-            "ok": False,
-            "bin_id": None,
-            "item_id": None,
-            "updated_bin": False,
-            "updated_led": False,
-            "row_bin": None,
-            "row_led_task": None,
-            "row_led_status": None,
-            "message": "Список подходящих ячеек пуст",
-        }
+        return {"ok": False, "message": "Список подходящих ячеек пуст"}
 
-    # Извлекаем item_id из barcode_info
     if (
         not barcode_info
         or not barcode_info.get("ok")
         or not barcode_info.get("exists")
         or not barcode_info.get("data")
     ):
-        return {
-            "ok": False,
-            "bin_id": None,
-            "item_id": None,
-            "updated_bin": False,
-            "updated_led": False,
-            "row_bin": None,
-            "row_led_task": None,
-            "row_led_status": None,
-            "message": "Товар по штрихкоду не найден или check_barcode_in_db() вернул ошибку",
-        }
+        return {"ok": False, "message": "Товар по штрихкоду не найден (check_barcode_in_db)"}
 
-    try:
-        item_data = barcode_info["data"]
-        item_id = int(item_data["id"])
-    except Exception:
-        return {
-            "ok": False,
-            "bin_id": None,
-            "item_id": None,
-            "updated_bin": False,
-            "updated_led": False,
-            "row_bin": None,
-            "row_led_task": None,
-            "row_led_status": None,
-            "message": "Не удалось извлечь id товара из результата check_barcode_in_db()",
-        }
+    item_id = int(barcode_info["data"]["id"])
 
-    print("Доступные для размещения ячейки (по размеру):", bin_ids)
-
-    conn = None
     chosen_bin_id = None
-    row_bin_final = None
-    row_led_task_final = None
+    conn = None
 
     try:
         conn = psycopg2.connect(**DB_CONFIG)
         conn.autocommit = False
 
-        # Внешний цикл — будет повторяться, пока не получится успешно разместить
-        while True:
-            print("Ожидаем срабатывания датчика (Sensor = 1) на одной из ячеек...")
+        print("Ожидаем Sensor=1 на одной из ячеек:", bin_ids)
 
-            # --- 2. Ждём выбора ячейки по Sensor ---
-            with conn.cursor(cursor_factory=DictCursor) as cur:
-                chosen_bin_id = None
-
-                while True:
-                    cur.execute(
-                        '''
-                        SELECT id, "Sensor", ref_item_id
-                        FROM public."IH_bin"
-                        WHERE id = ANY(%s);
-                        ''',
-                        (bin_ids,)
-                    )
-                    rows = cur.fetchall()
-
-                    candidates = [
-                        r for r in rows
-                        if r["Sensor"] == 1 and r["ref_item_id"] is None
-                    ]
-
-                    if len(candidates) == 1:
-                        chosen_bin_id = candidates[0]["id"]
-                        print(f"[INFO] Выбрана ячейка по Sensor: bin_id = {chosen_bin_id}")
-                        break
-                    elif len(candidates) > 1:
-                        conn.rollback()
-                        return {
-                            "ok": False,
-                            "bin_id": None,
-                            "item_id": item_id,
-                            "updated_bin": False,
-                            "updated_led": False,
-                            "row_bin": None,
-                            "row_led_task": None,
-                            "row_led_status": None,
-                            "message": "Обнаружено несколько ячеек с Sensor=1. Требуется вмешательство оператора.",
-                        }
-
-                    time.sleep(poll_interval)
-
-                # --- 3. Включаем зелёный мигающий для выбранной ячейки ---
-                print("[DB] Включаем зелёный мигающий для bin_id =", chosen_bin_id)
-
+        with conn.cursor(cursor_factory=DictCursor) as cur:
+            while True:
                 cur.execute(
-                    '''
-                    UPDATE public."IH_led_task" AS t
-                    SET 
-                        bin_status_id = %s,   -- зелёный
-                        "Blynk_id"    = %s    -- мигает
-                    WHERE t.bin_id = %s
-                    RETURNING 
-                        t.id,
-                        t.bin_id,
-                        t.bin_status_id,
-                        t."Bin_Sensor_status",
-                        t.shelf_id,
-                        t."Blynk_id";
-                    ''',
-                    (COLOR_ID_GREEN, BLINK_ON, chosen_bin_id)
-                )
-                row_led_blink = cur.fetchone()
-                if row_led_blink:
-                    print("[DEBUG] IH_led_task (зелёный мигающий):", dict(row_led_blink))
-                else:
-                    print("[WARN] Для bin_id нет строки в IH_led_task при включении мигания.")
-
-                conn.commit()
-
-            # --- 3.5. Даём время оператору разместить катушку ---
-            print(f"[INFO] Зелёный мигает. Ожидаем {place_delay} секунд для физического размещения...")
-            time.sleep(place_delay)
-
-            # --- 4. Проверяем, стоит ли катушка и фиксируем размещение ---
-            conn.autocommit = False
-            with conn.cursor(cursor_factory=DictCursor) as cur2:
-                # 4.1. Проверяем Sensor и ref_item_id для выбранной ячейки
-                cur2.execute(
                     '''
                     SELECT id, "Sensor", ref_item_id
                     FROM public."IH_bin"
-                    WHERE id = %s;
+                    WHERE id = ANY(%s);
                     ''',
-                    (chosen_bin_id,)
+                    (bin_ids,)
                 )
-                row_bin_check = cur2.fetchone()
+                rows = cur.fetchall()
 
-                if not row_bin_check:
-                    # Странно: ячейка исчезла
+                candidates = [
+                    r for r in rows
+                    if r["Sensor"] == 1 and r["ref_item_id"] is None
+                ]
+
+                if len(candidates) == 1:
+                    chosen_bin_id = int(candidates[0]["id"])
+                    print(f"[INFO] Выбрана ячейка по Sensor: bin_id={chosen_bin_id}")
+                    break
+
+                if len(candidates) > 1:
                     conn.rollback()
                     return {
                         "ok": False,
-                        "bin_id": chosen_bin_id,
+                        "message": "Несколько ячеек с Sensor=1 одновременно. Нужен оператор.",
                         "item_id": item_id,
-                        "updated_bin": False,
-                        "updated_led": False,
-                        "row_bin": None,
-                        "row_led_task": None,
-                        "row_led_status": None,
-                        "message": "Ячейка не найдена при подтверждении размещения.",
+                        "bin_id": None,
                     }
 
-                row_bin_check = dict(row_bin_check)
-                sensor_val = row_bin_check["Sensor"]
-                ref_item = row_bin_check["ref_item_id"]
+                time.sleep(poll_interval)
 
-                if sensor_val == 1 and ref_item is None:
-                    # ✅ Катушка стоит, ячейка ещё свободна — фиксируем размещение
+            # Включаем зелёный мигающий на выбранной
+            cur.execute(
+                '''
+                UPDATE public."IH_led_task" AS t
+                SET 
+                    bin_status_id = %s,   -- зелёный
+                    "Blynk_id"    = %s    -- мигает
+                WHERE t.bin_id = %s
+                RETURNING 
+                    t.id,
+                    t.bin_id,
+                    t.bin_status_id,
+                    t."Bin_Sensor_status",
+                    t.shelf_id,
+                    t."Blynk_id";
+                ''',
+                (COLOR_ID_GREEN, BLINK_ON, chosen_bin_id)
+            )
+            row_led = cur.fetchone()
+            conn.commit()
 
-                    print("[DB] Подтверждаем размещение. Пишем ref_item_id и выключаем мигание.")
+        return {
+            "ok": True,
+            "bin_id": chosen_bin_id,
+            "item_id": item_id,
+            "row_led_task": dict(row_led) if row_led else None,
+            "message": f"Ячейка выбрана (bin_id={chosen_bin_id}), зелёный мигающий включён.",
+        }
 
-                    # 4.2. Пишем ref_item_id в IH_bin
-                    cur2.execute(
-                        '''
-                        UPDATE public."IH_bin" AS b
-                        SET ref_item_id = %s
-                        WHERE b.id = %s
-                          AND b.ref_item_id IS NULL
-                        RETURNING 
-                            b.id,
-                            b.ref_item_id,
-                            b.bin_size,
-                            b.shelf_id,
-                            b.address,
-                            b.position_no;
-                        ''',
-                        (item_id, chosen_bin_id)
-                    )
-                    row_bin_final = cur2.fetchone()
-                    if not row_bin_final:
-                        conn.rollback()
-                        return {
-                            "ok": True,
-                            "bin_id": chosen_bin_id,
-                            "item_id": item_id,
-                            "updated_bin": False,
-                            "updated_led": False,
-                            "row_bin": None,
-                            "row_led_task": None,
-                            "row_led_status": None,
-                            "message": (
-                                "Катушка стояла, но не удалось записать в IH_bin: "
-                                "ячейка уже занята или не найдена."
-                            ),
-                        }
-                    row_bin_final = dict(row_bin_final)
-                    print("[DEBUG] IH_bin после записи ref_item_id:", row_bin_final)
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        return {"ok": False, "message": f"DB error в выборе ячейки по Sensor: {e}"}
+    finally:
+        if conn:
+            conn.close()
+#####################################STOP  ыбрать ячейку по Sensor и включить зелёный мигающий
 
-                    # 4.3. Переводим зелёный в постоянный (только Blynk_id)
-                    cur2.execute(
-                        '''
-                        UPDATE public."IH_led_task" AS t
-                        SET "Blynk_id" = %s
-                        WHERE t.bin_id = %s
-                        RETURNING 
-                            t.id,
-                            t.bin_id,
-                            t.bin_status_id,
-                            t."Bin_Sensor_status",
-                            t.shelf_id,
-                            t."Blynk_id";
-                        ''',
-                        (BLINK_OFF, chosen_bin_id)
-                    )
-                    row_led_task_final = cur2.fetchone()
-                    if row_led_task_final:
-                        row_led_task_final = dict(row_led_task_final)
-                        print("[DEBUG] IH_led_task (зелёный постоянный):", row_led_task_final)
-                    else:
-                        print("[WARN] Для bin_id нет строки в IH_led_task при отключении мигания.")
 
-                    conn.commit()
+#####################################START получить количество (из АПИ)
+from Provider1C import get_cmpp_carrier, upsert_cmpp_to_db 
 
+def placement_step_get_quantity_api_or_user(
+    carrier_no: str,
+    item_id: int,
+    ask_user_if_api_failed: bool = True,
+    timeout_sec: int = 180,
+) -> dict:
+    """
+    Приоритет:
+      1) пытаемся взять qty_units из API по carrier_no
+         + делаем upsert в БД (как у тебя уже сделано)
+      2) если API не дал qty_units — опционально спрашиваем пользователя
+    Возвращает:
+      { ok, qty, source, payload?, message }
+    """
+    # 1) API
+    try:
+        payload = get_cmpp_carrier(carrier_no)
+        qty_units = payload.get("qty_units", None)
+
+        # upsert в БД (чтобы справочники/катушка обновились)
+        try:
+            with psycopg2.connect(**DB_CONFIG) as conn:
+                upsert_res = upsert_cmpp_to_db(payload, conn)
+        except Exception as e:
+            upsert_res = {"status": "db_error", "error": str(e)}
+
+        # qty из API валидный?
+        if qty_units is not None:
+            try:
+                qty = float(qty_units)
+                if qty > 0:
                     return {
                         "ok": True,
-                        "bin_id": chosen_bin_id,
-                        "item_id": item_id,
-                        "updated_bin": True,
-                        "updated_led": True,
-                        "row_bin": row_bin_final,
-                        "row_led_task": row_led_task_final,
-                        "row_led_status": None,
-                        "message": (
-                            f"Катушка (item_id={item_id}) размещена в ячейке {chosen_bin_id} "
-                            f"по сигналу Sensor. ref_item_id записан, зелёный постоянный."
-                        ),
+                        "qty": qty,
+                        "source": "api",
+                        "payload": payload,
+                        "upsert": upsert_res,
+                        "message": f"Количество взято из API: {qty}",
                     }
-                else:
-                    # ❌ Катушка ушла (Sensor=0) или ячейка уже занята — откатываемся
-                    print(
-                        "[INFO] Размещение не подтверждено (Sensor !=1 или ячейка занята). "
-                        "Возвращаем ячейку в режим 'доступна' и продолжаем ожидание."
-                    )
+            except Exception:
+                pass
 
-                    # Вернём ячейку в режим "доступна" — белый мигающий
-                    cur2.execute(
-                        '''
-                        UPDATE public."IH_led_task" AS t
-                        SET 
-                            bin_status_id = %s,   -- белый
-                            "Blynk_id"    = %s    -- мигает
-                        WHERE t.bin_id = %s;
-                        ''',
-                        (COLOR_ID_WHITE, BLINK_ON, chosen_bin_id)
-                    )
+        # если API ответил, но qty пустой/0
+        api_msg = f"API ответил, но qty_units некорректен: {qty_units}"
+        if not ask_user_if_api_failed:
+            return {"ok": True, "qty": None, "source": "api_empty", "message": api_msg, "payload": payload, "upsert": upsert_res}
 
-                    conn.commit()
-                    # и возвращаемся в внешний while True — ждём следующего срабатывания Sensor
+        # fallback: спросить пользователя
+        user_res = placement_step_get_quantity_for_item(item_id=item_id, ask_user=True, timeout_sec=timeout_sec)
+        user_res["source"] = "user_after_api_empty"
+        user_res["payload"] = payload
+        user_res["upsert"] = upsert_res
+        return user_res
+
+    except Exception as e:
+        # API упал/не доступен
+        api_msg = f"API error: {e}"
+        if not ask_user_if_api_failed:
+            return {"ok": True, "qty": None, "source": "api_error", "message": api_msg}
+
+        # fallback: спросить пользователя
+        user_res = placement_step_get_quantity_for_item(item_id=item_id, ask_user=True, timeout_sec=timeout_sec)
+        user_res["source"] = "user_after_api_error"
+        user_res["api_error"] = str(e)
+        return user_res
+
+#####################################STOP получить количество (из АПИ)
+
+
+
+#####################################START Нормализация R283448 -> 283448
+import re
+
+def normalize_carrier_scan(code: str) -> str:
+    """
+    'R283448' -> '283448'
+    ' r 283448 ' -> '283448'
+    Если пришло уже '296002' -> '296002'
+    """
+    if code is None:
+        return ""
+    s = str(code).strip()
+
+    # убрать пробелы внутри, если сканер так шлёт
+    s = re.sub(r"\s+", "", s)
+
+    # убрать ведущую R/r
+    if s[:1].upper() == "R":
+        s = s[1:]
+
+    # оставить только цифры (на всякий случай)
+    s = re.sub(r"\D", "", s)
+    return s
+#####################################STOP Нормализация R283448 -> 283448
+
+
+
+#####################################START получить количество (из БД или спросить пользователя)
+def placement_step_get_quantity_for_item(
+    item_id: int,
+    ask_user: bool = True,
+    timeout_sec: int = 180,  # 3 минуты
+) -> dict:
+    """
+    Берём qwantity из IH_ref_items.
+    Если пусто — спрашиваем пользователя.
+    Если в течение timeout_sec ничего не введено — возвращаем timeout.
+    """
+
+    import time
+    import msvcrt  # Windows-only
+
+    conn = None
+    try:
+        conn = psycopg2.connect(**DB_CONFIG)
+        with conn.cursor(cursor_factory=DictCursor) as cur:
+            cur.execute(
+                '''
+                SELECT ext_id, name, id, bar_code, manufactor, qwantity
+                FROM public."IH_ref_items"
+                WHERE id = %s
+                LIMIT 1;
+                ''',
+                (item_id,)
+            )
+            row = cur.fetchone()
+
+        if not row:
+            return {"ok": False, "qty": None, "message": f"Товар item_id={item_id} не найден"}
+
+        rowd = dict(row)
+        db_qty = rowd.get("qwantity")
+
+        # если в БД уже есть количество
+        try:
+            if db_qty is not None:
+                qty = float(db_qty)
+                if qty > 0:
+                    return {
+                        "ok": True,
+                        "qty": qty,
+                        "source": "db",
+                        "item": rowd,
+                        "message": f"Количество взято из БД: {qty}",
+                    }
+        except Exception:
+            pass
+
+        if not ask_user:
+            return {
+                "ok": True,
+                "qty": None,
+                "source": "none",
+                "item": rowd,
+                "message": "qwantity пусто, ввод выключен",
+            }
+
+        # ---- Ввод с таймаутом ----
+        print(f"[INPUT] Для катушки '{rowd.get('name')}' (bar_code={rowd.get('bar_code')}) количество не задано.")
+        print(f"Введите количество (таймаут {timeout_sec} сек). Пусто = отмена: ", end="", flush=True)
+
+        buf = ""
+        t0 = time.time()
+
+        while True:
+            # если нажали клавишу
+            if msvcrt.kbhit():
+                ch = msvcrt.getwch()
+
+                # Enter
+                if ch in ("\r", "\n"):
+                    print("")
+                    break
+
+                # Backspace
+                if ch == "\b":
+                    if buf:
+                        buf = buf[:-1]
+                        print("\b \b", end="", flush=True)
+                    continue
+
+                # Ctrl+C
+                if ch == "\x03":
+                    raise KeyboardInterrupt
+
+                buf += ch
+                print(ch, end="", flush=True)
+
+            # проверяем таймаут
+            if time.time() - t0 >= timeout_sec:
+                print("")
+                return {
+                    "ok": True,
+                    "qty": None,
+                    "source": "timeout",
+                    "item": rowd,
+                    "message": f"Таймаут ввода {timeout_sec} сек",
+                }
+
+            time.sleep(0.05)
+
+        s = buf.strip()
+
+        if not s:
+            return {
+                "ok": True,
+                "qty": None,
+                "source": "user_cancel",
+                "item": rowd,
+                "message": "Пользователь не ввёл количество",
+            }
+
+        try:
+            user_qty = float(s.replace(",", "."))
+        except Exception:
+            return {
+                "ok": False,
+                "qty": None,
+                "source": "user_bad",
+                "item": rowd,
+                "message": f"Некорректный ввод: {s}",
+            }
+
+        if user_qty <= 0:
+            return {
+                "ok": False,
+                "qty": None,
+                "source": "user_bad",
+                "item": rowd,
+                "message": "Количество должно быть > 0",
+            }
+
+        return {
+            "ok": True,
+            "qty": user_qty,
+            "source": "user",
+            "item": rowd,
+            "message": f"Количество введено: {user_qty}",
+        }
 
     except KeyboardInterrupt:
         return {
-            "ok": False,
-            "bin_id": chosen_bin_id,
-            "item_id": item_id,
-            "updated_bin": False,
-            "updated_led": False,
-            "row_bin": None,
-            "row_led_task": None,
-            "row_led_status": None,
-            "message": "Ожидание выбора ячейки по Sensor прервано оператором (KeyboardInterrupt).",
+            "ok": True,
+            "qty": None,
+            "source": "interrupt",
+            "message": "Ввод прерван оператором",
         }
     except Exception as e:
-        if conn is not None:
-            conn.rollback()
-        return {
-            "ok": False,
-            "bin_id": chosen_bin_id,
-            "item_id": item_id,
-            "updated_bin": False,
-            "updated_led": False,
-            "row_bin": None,
-            "row_led_task": None,
-            "row_led_status": None,
-            "message": f"DB error при выборе ячейки по Sensor и размещении: {e}",
-        }
+        return {"ok": False, "qty": None, "message": f"DB error: {e}"}
     finally:
-        if conn is not None:
+        if conn:
             conn.close()
 
-#####################################STOP  Установка катушки и чтение датчика что она установлена
+#####################################STOP  получить количество (из БД или спросить пользователя)
+
+#####################################STOP  подождать перед коммитом 3 секунды
+def placement_step_precommit_blink_wait(
+    chosen_bin_id: int,
+    wait_sec: float = 3.0,
+    require_sensor_still_on: bool = True,
+    poll_interval: float = 0.2,
+) -> dict:
+    """
+    Перед коммитом выдерживаем wait_sec секунд.
+    Опционально контролируем, что Sensor всё это время остаётся 1.
+    """
+    t0 = time.time()
+    conn = None
+    try:
+        if not require_sensor_still_on:
+            time.sleep(wait_sec)
+            return {"ok": True, "message": f"Выдержали {wait_sec} сек перед коммитом"}
+
+        conn = psycopg2.connect(**DB_CONFIG)
+        conn.autocommit = True
+
+        while True:
+            if time.time() - t0 >= wait_sec:
+                break
+
+            with conn.cursor(cursor_factory=DictCursor) as cur:
+                cur.execute(
+                    'SELECT "Sensor" FROM public."IH_bin" WHERE id = %s;',
+                    (chosen_bin_id,)
+                )
+                r = cur.fetchone()
+                if not r:
+                    return {"ok": False, "message": "Ячейка не найдена при precommit wait"}
+                if r["Sensor"] != 1:
+                    return {"ok": False, "message": "Sensor стал 0 до коммита (катушку убрали)"}
+
+            time.sleep(poll_interval)
+
+        return {"ok": True, "message": f"Sensor был 1, выдержали {wait_sec} сек перед коммитом"}
+
+    except Exception as e:
+        return {"ok": False, "message": f"DB error в precommit wait: {e}"}
+    finally:
+        if conn:
+            conn.close()
 
 
+#####################################START подождать перед коммитом 3 секунды
 
 
+#####################################START зафиксировать размещение в bin + сохранить в operation + выключить мигание
+def placement_step_commit_to_bin_with_qty(
+    op_id: int,
+    chosen_bin_id: int,
+    item_id: int,
+    qty: float,
+) -> dict:
+    """
+    Фиксация:
+      - проверяем, что Sensor=1 и ref_item_id IS NULL
+      - UPDATE IH_bin: ref_item_id=item_id, qwantity=qty
+      - IH_led_task: Blynk_id = BLINK_OFF (зелёный постоянный)
+      - IH_Operation: chosen_bin_id, chosen_item_id, input_qty
+    """
+    if qty is None:
+        return {"ok": False, "message": "qty не задан"}
+
+    conn = None
+    try:
+        conn = psycopg2.connect(**DB_CONFIG)
+        conn.autocommit = False
+
+        with conn.cursor(cursor_factory=DictCursor) as cur:
+            # 1) перепроверка состояния ячейки
+            cur.execute(
+                '''
+                SELECT id, "Sensor", ref_item_id
+                FROM public."IH_bin"
+                WHERE id = %s;
+                ''',
+                (chosen_bin_id,)
+            )
+            row_chk = cur.fetchone()
+            if not row_chk:
+                conn.rollback()
+                return {"ok": False, "message": f"Ячейка bin_id={chosen_bin_id} не найдена"}
+
+            if row_chk["Sensor"] != 1:
+                conn.rollback()
+                return {"ok": False, "message": f"Sensor=0 (катушка не стоит) для bin_id={chosen_bin_id}"}
+
+            if row_chk["ref_item_id"] is not None:
+                conn.rollback()
+                return {"ok": False, "message": f"Ячейка уже занята (ref_item_id != NULL) bin_id={chosen_bin_id}"}
+
+            # 2) пишем в bin ref_item_id + qwantity
+            cur.execute(
+                '''
+                UPDATE public."IH_bin" AS b
+                SET 
+                    ref_item_id = %s,
+                    qwantity    = %s
+                WHERE b.id = %s
+                  AND b.ref_item_id IS NULL
+                RETURNING
+                    shelf_id, address, position_no, id, mode_id, ref_item_id, mode_blynk,
+                    "Sensor", qwantity, "ErrorSensor", bin_size, "Inventarization",
+                    "UserInventarization", "DataInventarization";
+                ''',
+                (item_id, qty, chosen_bin_id)
+            )
+            row_bin = cur.fetchone()
+            if not row_bin:
+                conn.rollback()
+                return {"ok": False, "message": "Не удалось обновить IH_bin (возможно, заняли параллельно)"}
+
+            # 3) выключаем мигание (зелёный остаётся)
+            cur.execute(
+                '''
+                UPDATE public."IH_led_task" AS t
+                SET "Blynk_id" = %s
+                WHERE t.bin_id = %s
+                RETURNING 
+                    t.id, t.bin_id, t.bin_status_id, t."Bin_Sensor_status", t.shelf_id, t."Blynk_id";
+                ''',
+                (BLINK_OFF, chosen_bin_id)
+            )
+            row_led = cur.fetchone()
+
+            # 4) фиксируем в операции (для истории)
+            cur.execute(
+                '''
+                UPDATE public."IH_Operation"
+                SET 
+                    chosen_bin_id  = %s,
+                    chosen_item_id = %s,
+                    input_qty      = %s
+                WHERE id = %s
+                RETURNING id, status, operator, started_at, finished_at, expires_at,
+                          workstation_id, op_type, input_qty, chosen_bin_id, chosen_item_id;
+                ''',
+                (chosen_bin_id, item_id, qty, op_id)
+            )
+            row_op = cur.fetchone()
+
+        conn.commit()
+        return {
+            "ok": True,
+            "row_bin": dict(row_bin),
+            "row_led_task": dict(row_led) if row_led else None,
+            "row_operation": dict(row_op) if row_op else None,
+            "message": f"Размещение зафиксировано: bin_id={chosen_bin_id}, item_id={item_id}, qty={qty}",
+        }
+
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        return {"ok": False, "message": f"DB error при фиксации размещения: {e}"}
+    finally:
+        if conn:
+            conn.close()
+#####################################STOP  зафиксировать размещение в bin + сохранить в operation + выключить мигание
 
 #####################################START Открывает операцию IDLE (op_type='IDLE', status='IDLE')
 def open_idle_operation(operator: str, workstation_id: str) -> dict:
@@ -1088,21 +1262,63 @@ if __name__ == "__main__":
         raise SystemExit(0)
 
     # 5. Ожидание Sensor и размещение катушки
-    final_result = placement_step_wait_sensor_and_place(bins_result, step2)
-    print("[STEP4_PLACE_BY_SENSOR]", final_result)
+    chosen = placement_step_choose_bin_by_sensor_and_blink_green(bins_result, step2)
+    print("[STEP4_CHOOSE_BIN]", chosen)
 
-    if final_result.get("ok") and final_result.get("updated_bin"):
-        print("[INFO] Размещение подтверждено, закрываем PLACEMENT как DONE.")
-        close_res = close_placement_operation(op_id, new_status="DONE")
-        print("[CLOSE_PLACEMENT]", close_res)
-
-        print("[INFO] Открываем IDLE с пустым finished_at.")
-        idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
-        print("[OPEN_IDLE]", idle_res)
-    else:
-        print("[WARN] Катушка не была размещена, закрываем PLACEMENT как NOT_PLACED.")
+    if not chosen.get("ok"):
         close_res = close_placement_operation(op_id, new_status="NOT_PLACED")
         print("[CLOSE_PLACEMENT]", close_res)
+        idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
+        print("[OPEN_IDLE]", idle_res)
+        raise SystemExit(0)
+
+    chosen_bin_id = chosen["bin_id"]
+    item_id = chosen["item_id"]
+
+    # 6) Получение количества (из БД или ввод)
+    carrier_no = current_barcode  # если сканируешь именно номер катушки (296002)
+    qty_res = placement_step_get_quantity_api_or_user(
+        carrier_no=str(carrier_no),
+        item_id=item_id,
+        ask_user_if_api_failed=True,
+        timeout_sec=180,
+    )
+    print("[STEP5_GET_QTY]", qty_res)
+
+    qty = qty_res.get("qty")
+    if not qty_res.get("ok") or qty is None:
+        close_res = close_placement_operation(op_id, new_status="NO_QTY")
+        print("[CLOSE_PLACEMENT]", close_res)
+        idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
+        print("[OPEN_IDLE]", idle_res)
+        raise SystemExit(0)
+
+        # ✅ 7) Перед коммитом поморгаем 3 секунды (зелёный мигающий уже включён)
+        pre = placement_step_precommit_blink_wait(
+            chosen_bin_id=chosen_bin_id,
+            wait_sec=3.0,
+            require_sensor_still_on=True,
+        )
+        print("[STEP5_5_PRECOMMIT_WAIT]", pre)
+
+        if not pre.get("ok"):
+            # если катушку убрали или что-то не так — выходим
+            close_res = close_placement_operation(op_id, new_status="NOT_CONFIRMED")
+            print("[CLOSE_PLACEMENT]", close_res)
+            idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
+            print("[OPEN_IDLE]", idle_res)
+            raise SystemExit(0)
+
+    # 8) Коммит
+    commit = placement_step_commit_to_bin_with_qty(
+        op_id=op_id,
+        chosen_bin_id=chosen_bin_id,
+        item_id=item_id,
+        qty=qty,
+    )
+    print("[STEP6_COMMIT]", commit)
+    idle_res = open_idle_operation(operator=operator, workstation_id=workstation_id)
+    print("[OPEN_IDLE]", idle_res)
 
     
     

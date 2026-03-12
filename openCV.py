@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-IMAGE_PATH = "bolts.jpg"
+IMAGE_PATH = "bolts1.jpg"
 
 # -------------------------
 # НАСТРОЙКИ (крутить тут)

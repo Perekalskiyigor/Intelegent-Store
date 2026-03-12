@@ -3,18 +3,20 @@ import uuid
 
 # ====== Справочники ======
 
+##################### IH_ref_items для АПИ
 class RefItem(models.Model):
     id = models.AutoField(primary_key=True)
-    ext_id = models.TextField()                      # NOT NULL
-    name = models.TextField(unique=True, null=True)  # в БД UNIQUE(name)
-    bar_code = models.TextField(null=True, blank=True)
+    ext_id = models.CharField(max_length=64, null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    bar_code = models.CharField(max_length=64, null=True, blank=True)
+    manufactor = models.CharField(max_length=255, null=True, blank=True)
+    qwantity = models.IntegerField(null=True, blank=True)
+    dropped = models.BooleanField(null=True, blank=True)
 
     class Meta:
-        db_table = "IH_ref_items"
+        db_table = 'IH_ref_items'
         managed = False
-
-    def __str__(self):
-        return self.name or f"Item#{self.id}"
+############################################
 
 
 class RefSize(models.Model):
@@ -39,22 +41,24 @@ class RefSize(models.Model):
 class TechUnit(models.Model):
     id = models.AutoField(primary_key=True)
     code = models.IntegerField(null=True, blank=True)
+
     item = models.ForeignKey(
         RefItem,
         db_column="item_id",
         to_field="id",
-        on_delete=models.DO_NOTHING,       # NO ACTION
+        on_delete=models.DO_NOTHING,
         related_name="tech_units",
         null=True,
         blank=True,
     )
 
+    item_code = models.CharField(max_length=64, null=True, blank=True)
+    uom = models.CharField(max_length=128, null=True, blank=True)
+    series_no = models.CharField(max_length=64, null=True, blank=True)
+
     class Meta:
         db_table = "IH_tech_unit"
         managed = False
-
-    def __str__(self):
-        return f"TechUnit#{self.id} code={self.code}"
 
 
 # ====== Локации склада ======
@@ -178,7 +182,31 @@ class Bin(models.Model):
 
     def __str__(self):
         return f"Bin#{self.id} addr={self.address} pos={self.position_no}"
+    
 
+
+
+##################  IH_ref_size для АПИ
+class RefSize(models.Model):
+    id = models.AutoField(primary_key=True)
+    ext_id = models.CharField(max_length=64, null=True, blank=True)
+
+    item = models.ForeignKey(
+        RefItem,
+        db_column="item_id",
+        to_field="id",
+        on_delete=models.DO_NOTHING,
+        related_name="sizes",   # <-- так мы потом получим item.sizes.all()
+    )
+
+    reel_diam = models.FloatField(null=True, blank=True)
+    reel_width = models.FloatField(null=True, blank=True)
+    comment = models.TextField(db_column="comment")
+
+    class Meta:
+        db_table = 'IH_ref_size'
+        managed = False
+############################################
 
 
 #логи общие

@@ -586,3 +586,153 @@ def files_select_list(request):
 
 
 #############################Файлы данных#############################
+
+
+
+
+
+#############################         API   JSON           #############################
+
+#############################Получение  ячеек из бин #############################
+from rest_framework import generics
+from .models import Bin
+from .serializers import BinSerializer
+from django.db.models import Prefetch
+from .models import RefSize
+
+class BinDetailView(generics.RetrieveAPIView):
+    serializer_class = BinSerializer
+    lookup_field = "id"
+
+    def get_queryset(self):
+        return (
+            Bin.objects
+            .select_related("ref_item", "shelf", "mode")   # FK одним JOIN
+            .prefetch_related(
+                Prefetch("ref_item__sizes", queryset=RefSize.objects.all())
+            )
+        )
+#############################Получение  ячеек из бин #############################
+
+
+#############################Добавление катушки в справочник #############################
+from django.db import transaction
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .serializers import ReelUpsertInSerializer
+from .models import RefItem, TechUnit, RefSize
+
+
+class ReelUpsertView(APIView):
+    """
+    POST /api/v1/reels/upsert/
+
+    Вход (JSON):
+      - carrier_no (int/str)        -> TechUnit.code
+      - series_no (str, optional)   -> TechUnit.series_no
+      - item_code (str)            -> TechUnit.item_code
+      - item_name (str)            -> RefItem.name
+      - uom (str, optional)         -> TechUnit.uom
+      - qty_units (int, optional)   -> RefItem.qwantity
+
+      - reel_diam (str, optional)   -> RefSize.reel_diam
+      - reel_width (float, optional)-> RefSize.reel_width
+      - comment (float, optional)   -> RefSize.comment
+
+    Логика:
+      1) Ищем TechUnit по code=carrier_no
+      2) Если найден и есть item:
+         - обновляем RefItem (name, qwantity)
+         - обновляем TechUnit (item_code, uom, series_no)
+      3) Если не найден:
+         - создаём RefItem
+         - создаём TechUnit и связываем с RefItem
+      4) Если передан reel_diam (или reel_width):
+         - upsert RefSize по (item, reel_diam), обновляем reel_width/comment
+    """
+
+    @transaction.atomic
+    def post(self, request):
+        s = ReelUpsertInSerializer(data=request.data)
+        s.is_valid(raise_exception=True)
+        data = s.validated_data
+
+        # TechUnit.code у тебя IntegerField
+        carrier_no = int(data["carrier_no"])
+
+        tech = TechUnit.objects.select_related("item").filter(code=carrier_no).first()
+
+        if tech and tech.item_id:
+            item = tech.item
+
+            # обновим item
+            item.name = data["item_name"]
+            item.qwantity = data.get("qty_units", 0)
+            item.dropped = data.get("dropped", False)  # True/False
+            item.save(update_fields=["name", "qwantity","dropped"])
+
+            # обновим tech_unit
+            tech.item_code = data["item_code"]
+            tech.uom = data.get("uom") or ""
+            tech.series_no = data.get("series_no") or ""
+            tech.save(update_fields=["item_code", "uom", "series_no"])
+
+            item_created = False
+            tech_created = False
+        else:
+            # создаём item + tech_unit
+            item = RefItem.objects.create(
+                name=data["item_name"],
+                qwantity=data.get("qty_units", 0),
+                dropped=data["dropped"],
+            )
+            item_created = True
+
+            tech = TechUnit.objects.create(
+                code=carrier_no,
+                item=item,
+                item_code=data["item_code"],
+                uom=data.get("uom") or "",
+                series_no=data.get("series_no") or "",
+            )
+            tech_created = True
+
+        # --- RefSize (опционально, новая модель) ---
+        size_obj = None
+        size_created = None
+
+        reel_diam = data.get("reel_diam")
+        reel_width = data.get("reel_width")
+        comment = data.get("comment")
+
+        # Создаём/обновляем размер, если пришли хоть какие-то данные
+        if reel_diam or (reel_width is not None) or (comment is not None):
+            # если reel_diam не передали, но width/comment передали — можно хранить с NULL диаметром
+            # но update_or_create по NULL ключу неудобен → поэтому лучше требовать reel_diam.
+            # Здесь сделаем безопасно: если нет diam, просто не трогаем RefSize.
+            if reel_diam:
+                size_obj, size_created = RefSize.objects.update_or_create(
+                    item=item,
+                    reel_diam=reel_diam,
+                    defaults={
+                        "reel_width": reel_width,
+                        "comment": comment,
+                    },
+                )
+
+        return Response(
+            {
+                "ok": True,
+                "item": {"id": item.id, "created": item_created},
+                "tech_unit": {"id": tech.id, "created": tech_created},
+                "size": None if size_obj is None else {"id": size_obj.id, "created": size_created},
+            },
+            status=status.HTTP_201_CREATED if (item_created or tech_created or (size_created is True)) else status.HTTP_200_OK,
+        )
+#############################Добавление катушки в справочник #############################
+
+
+
+#############################         API   JSON           #############################
