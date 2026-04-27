@@ -1,18 +1,19 @@
 DEFAULT_BINS_COUNT = 20
 
-POLL_SENSORS_SEC = 1.0
+POLL_SENSORS_SEC = 0.3
 LOOP_SLEEP_SEC = 0.05
 
 FLASK_HOST = "0.0.0.0"
 FLASK_PORT = 5000
 FLASK_DEBUG = True
 
-PLC_HOST = "192.168.1.10"   # IP контроллера
-PLC_PORT = 502
-PLC_UNIT = 1                # unit/slave id
+# Новый встроенный Modbus TCP server
+MODBUS_HOST = "0.0.0.0"
+MODBUS_PORT = 1502
+MODBUS_UNIT = 2
 
 # Диоды адреса
-ROW_WIDTH = 10
+ROW_WIDTH = 5
 BASE_ADDR = 10
 
 # Датчики адреса
