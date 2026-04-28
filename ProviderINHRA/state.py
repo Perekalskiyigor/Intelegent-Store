@@ -1,10 +1,18 @@
 # state.py
+# файл хранилища состояния ячеек. Он держит в памяти состояние:
+# светодиодов по каждой ячейке
+# датчиков/герконов по каждой ячейке
+# мета-информацию: сколько ячеек, когда стартовали, когда был последний опрос
 from __future__ import annotations
 
 from dataclasses import dataclass, asdict
 from typing import Dict, Any
 import time
 import threading
+import logging
+logger = logging.getLogger(__name__)
+logger.info(f" STATE Инициализация сструктуры")
+
 
 # -----------------------------
 # Константы (качество данных)
@@ -25,7 +33,7 @@ def now_ts() -> float:
 class LedState:
     bin: int
     color: int = 0          # 0 = выкл (например)
-    mode: int = 0           # твой blynk mode / режим
+    mode: int = 0           # blynk mode / режим
     desired_ts: float = 0.0 # когда запросили (API/логика)
     applied_ts: float = 0.0 # когда реально применили в modbus
     dirty: bool = False     # нужно отправить в modbus
@@ -45,6 +53,7 @@ class SensorState:
 # Инициализация state
 # -----------------------------
 def init_state(bins_count: int) -> Dict[str, Any]:
+    logger.info(f" STATE Инициализация сструктуры")
     """
     Создаёт структуру state:
       state["meta"]
@@ -105,6 +114,7 @@ class StateStore:
     # -------------------------
     # LED (desired -> dirty)
     # -------------------------
+    # вызывает это, когда надо поменять светодиод.Внутри ставится: dirty = True То есть команда не применена в модбас.
     def set_led(self, bin_no: int, color: int, mode: int, source: str = "api") -> None:
         with self._lock:
             self._ensure_bin(bin_no)
@@ -114,18 +124,22 @@ class StateStore:
             led.desired_ts = now_ts()
             led.dirty = True
             led.source = source
+        logger.info(f"[STATE] LED desired: bin={bin_no}, color={color}, mode={mode}, source={source}")
 
     def mark_led_applied(self, bin_no: int) -> None:
         """
         Вызывать после успешной записи в Modbus.
+        Worker вызывает после успешной записи в Modbus.  dirty = False отмечаем как отправленное
         """
         with self._lock:
             self._ensure_bin(bin_no)
             led: LedState = self._state["bins"][bin_no]["led"]
             led.applied_ts = now_ts()
             led.dirty = False
+        logger.info(f"[STATE] LED applied: bin={bin_no}")
 
     def get_dirty_leds(self) -> Dict[int, Dict[str, int]]:
+        # Worker вызывает это и получает список светодиодов, которые надо записать в ПЛК.
         """
         Worker забирает список команд на запись в Modbus.
         Возвращаем минимально нужные поля.
@@ -143,6 +157,7 @@ class StateStore:
     # -------------------------
     def update_sensor(self, bin_no: int, value: bool, quality: str = QUALITY_OK) -> bool:
         """
+        Worker вызывает после чтения датчика.
         Обновляет датчик.
         Возвращает True, если значение изменилось.
         """
@@ -151,16 +166,24 @@ class StateStore:
             s: SensorState = self._state["bins"][bin_no]["sensor"]
             t = now_ts()
 
-            changed = (bool(value) != bool(s.value))
+            old_value = s.value
+            new_value = bool(value)
+
+            changed = (new_value != old_value)
 
             s.ts = t
             s.quality = quality
 
             if changed:
-                s.value = bool(value)
+                s.value = new_value
                 s.changed_ts = t
 
-            return changed
+        if changed:
+            logger.info(
+                f"[STATE] Sensor changed: bin={bin_no}, old={old_value}, new={new_value}, quality={quality}"
+            )
+
+        return changed
 
     def set_last_poll_ts(self) -> None:
         with self._lock:
@@ -171,4 +194,5 @@ class StateStore:
     # -------------------------
     def _ensure_bin(self, bin_no: int) -> None:
         if bin_no not in self._state["bins"]:
+            logger.error(f"[STATE] Unknown bin_no={bin_no}. bins_count={self.bins_count()}")
             raise ValueError(f"Unknown bin_no={bin_no}. bins_count={self.bins_count()}")

@@ -5,6 +5,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
+logger.info(f" WORKER Инициализация сструктуры")
 
 
 import requests
