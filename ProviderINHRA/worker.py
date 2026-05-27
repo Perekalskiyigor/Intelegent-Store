@@ -3,9 +3,13 @@ from typing import Dict
 import logging
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+import json
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 logger.info(f" WORKER Инициализация сструктуры")
+
+from config import CLIENT_ID, CLIENT_SECRET
 
 
 import requests
@@ -22,22 +26,88 @@ from db import Database
 from modbus_server import set_hr_values, get_coil_value
 
 
-def push_sensor_change(bin_no: int, value: bool, quality: str = "OK") -> None:
-    url = "https://1c-element-test.prosyst.ru/applications/inhra-dev/api/get_event/"
+TOKEN_URL = "https://1c-element-test.prosyst.ru/applications/Sistema-intellektualnogo-khraneniya-dev/sys/token"
+EVENT_URL = "https://1c-element-test.prosyst.ru/applications/Sistema-intellektualnogo-khraneniya-dev/api/event"
 
+BASIC_AUTH = "Basic MEtlRXZvOFNyX3hFb1BqcFQzSkZQSTVROUk0VUd2ZUV3X3B1dVFFa0hLQT06VDdIVDY1elpVUUFKNmg4alIyd181V0VWalFHeC14X1p2M0YtOUFpcmNYWT0="
+
+
+def get_access_token() -> str:
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": BASIC_AUTH,
+    }
+
+    data = "grant_type=CLIENT_CREDENTIALS"
+
+    print("========================================")
+    print("[WORKER] ПОЛУЧАЕМ TOKEN")
+    print(f"URL: {TOKEN_URL}")
+    print(f"DATA: {data}")
+    print("========================================")
+
+    resp = requests.post(
+        TOKEN_URL,
+        headers=headers,
+        data=data,
+        timeout=5,
+        verify=False,
+    )
+
+    print("============== TOKEN RESPONSE ==============")
+    print(f"STATUS CODE: {resp.status_code}")
+    print(f"RESPONSE TEXT: {resp.text}")
+    print("============================================")
+
+    resp.raise_for_status()
+
+    token_data = resp.json()
+
+    token = token_data.get("id_token")   # ВАЖНО: берем id_token
+
+    if not token:
+        raise RuntimeError(f"Не найден id_token в ответе: {token_data}")
+
+    return token
+
+
+def push_sensor_change(bin_no: int, value: bool, quality: str = "OK") -> None:
     payload = {
+        "equip": 1,
         "bin_no": int(bin_no),
         "value": bool(value),
         "quality": str(quality),
+        "time_event": datetime.now().isoformat(),
     }
 
     try:
+        access_token = get_access_token()
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {access_token}",
+        }
+
+        print("========================================")
+        print("[WORKER] ОТПРАВКА СОБЫТИЯ")
+        print(f"URL: {EVENT_URL}")
+        print(f"PAYLOAD: {json.dumps(payload, ensure_ascii=False)}")
+        print("========================================")
+
         resp = requests.post(
-            url,
+            EVENT_URL,
             json=payload,
-            timeout=2,
-            verify=False,  # временно, для тестового сервера с self-signed SSL
+            headers=headers,
+            timeout=5,
+            verify=False,
         )
+
+        print("============== EVENT RESPONSE ==============")
+        print(f"STATUS CODE: {resp.status_code}")
+        print(f"RESPONSE TEXT: {resp.text}")
+        print(f"RESPONSE HEADERS: {dict(resp.headers)}")
+        print("============================================")
+
         resp.raise_for_status()
 
         logger.info(

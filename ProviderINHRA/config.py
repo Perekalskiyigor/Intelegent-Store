@@ -18,3 +18,8 @@ BASE_ADDR = 10
 
 # Датчики адреса
 SENSOR_COIL_BASE = 1000     # пример, поправишь под себя
+
+# Пуш сенсоров
+
+CLIENT_ID = "0KeEvo8Sr_xEoPjpT3JFPI5Q9I4UGveEw_puuQEkHKA="
+CLIENT_SECRET = "T7HT65zZUQAJ6h8jR2w_5WEVjQGx-x_Zv3F-9AircXY="
