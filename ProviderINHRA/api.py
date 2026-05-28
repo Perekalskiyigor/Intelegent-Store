@@ -9,12 +9,30 @@ def create_app(store: StateStore) -> Flask:
         data = request.get_json(force=True) or {}
         try:
             color = int(data.get("color", 0))
-            mode  = int(data.get("mode", 0))
-            store.set_led(bin_no, color, mode, source="api")
-            return jsonify({"status": "ok", "bin": bin_no, "color": color, "mode": mode})
+            mode = int(data.get("mode", 0))
+            duration = int(data.get("duration", 0))  # время в секундах
+            
+            # Используем метод с таймером
+            store.set_led_with_timeout(bin_no, color, mode, duration, source="api")
+            
+            response = {
+                "status": "ok", 
+                "bin": bin_no, 
+                "color": color, 
+                "mode": mode,
+                "duration": duration
+            }
+            
+            if duration > 0:
+                response["auto_off_in_seconds"] = duration
+                response["message"] = f"LED will turn off automatically after {duration} seconds"
+            
+            return jsonify(response)
+            
         except ValueError as e:
-            return jsonify({"error": str(e)}), 404
-        except Exception:
+            return jsonify({"error": str(e)}), 400
+        except Exception as e:
+            # logger.exception(f"API error: {e}")
             return jsonify({"error": "bad payload"}), 400
 
     @app.get("/sensor/<int:bin_no>")
