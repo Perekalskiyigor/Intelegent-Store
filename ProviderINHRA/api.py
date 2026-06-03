@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from state import StateStore
+from datetime import datetime
 
 def create_app(store: StateStore) -> Flask:
     app = Flask(__name__)
@@ -38,26 +39,24 @@ def create_app(store: StateStore) -> Flask:
     @app.get("/bin/<int:bin_no>")
     def get_bin_state(bin_no: int):
         snap = store.get_snapshot()
+
         if bin_no not in snap["bins"]:
             return jsonify({"error": "bin not found"}), 404
 
         bin_data = snap["bins"][bin_no]
-        return jsonify({
-            "status": "ok",
-            "bin": bin_no,
-            "sensor": bin_data["sensor"],   # {'value': ..., ...}
-            "led": bin_data["led"]          # {'color': ..., 'mode': ...}
-        })
 
-    @app.get("/sensor/<int:bin_no>")
-    def get_sensor(bin_no: int):
-        snap = store.get_snapshot()
-        if bin_no not in snap["bins"]:
-            return jsonify({"error": "bin not found"}), 404
         return jsonify({
             "status": "ok",
             "bin": bin_no,
-            "value": snap["bins"][bin_no]["sensor"]["value"]
+            "sensor": {
+                "bin": bin_no,
+                "value": bin_data["sensor"]["value"]
+            },
+            "led": {
+                "bin": bin_no,
+                "color": bin_data["led"]["color"],
+                "mode": bin_data["led"]["mode"]
+            }
         })
 
     @app.get("/sensors")

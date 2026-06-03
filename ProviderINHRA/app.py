@@ -1,6 +1,12 @@
 import threading
 import logging
 from logger_config import setup_logging
+"""
+    172.21.201.9
+Логин admin
+Пароль KTOcam2026!
+
+"""
 
 setup_logging()
 
