@@ -34,6 +34,20 @@ def create_app(store: StateStore) -> Flask:
         except Exception as e:
             # logger.exception(f"API error: {e}")
             return jsonify({"error": "bad payload"}), 400
+        
+    @app.get("/bin/<int:bin_no>")
+    def get_bin_state(bin_no: int):
+        snap = store.get_snapshot()
+        if bin_no not in snap["bins"]:
+            return jsonify({"error": "bin not found"}), 404
+
+        bin_data = snap["bins"][bin_no]
+        return jsonify({
+            "status": "ok",
+            "bin": bin_no,
+            "sensor": bin_data["sensor"],   # {'value': ..., ...}
+            "led": bin_data["led"]          # {'color': ..., 'mode': ...}
+        })
 
     @app.get("/sensor/<int:bin_no>")
     def get_sensor(bin_no: int):
