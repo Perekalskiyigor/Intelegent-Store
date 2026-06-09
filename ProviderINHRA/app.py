@@ -1,6 +1,8 @@
 import threading
 import logging
 from logger_config import setup_logging
+from mcu_diag_monitor import start_mcu_diag_monitor
+
 """
     172.21.201.9
 Логин admin
@@ -56,6 +58,8 @@ if __name__ == "__main__":
         )
     modbus_thread.start()
     logger.info("APP Modbus server thread started")
+    
+    
 
     worker_thread = threading.Thread(
         target=run_thread,
@@ -65,6 +69,9 @@ if __name__ == "__main__":
     worker_thread.start()
 
     logger.info("APP Worker thread started")
+    
+    start_mcu_diag_monitor(db, poll_sec=600)
+    logger.info("APP MCU diag monitor thread started")
 
     logger.info(f"APP Starting Flask API on {FLASK_HOST}:{FLASK_PORT}")
     try:
@@ -77,3 +84,5 @@ if __name__ == "__main__":
         )
     except Exception as e:
         logger.exception(f"APP [FLASK CRASH] error={e}")
+        
+    

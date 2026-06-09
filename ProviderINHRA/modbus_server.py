@@ -11,7 +11,7 @@ from config import MODBUS_HOST, MODBUS_PORT, MODBUS_UNIT
 MODBUS_LOCK = threading.RLock()
 
 HR_START = 0
-HR_SIZE = 1000
+HR_SIZE = 10000
 COIL_SIZE = 2000
 
 store = ModbusSlaveContext(
