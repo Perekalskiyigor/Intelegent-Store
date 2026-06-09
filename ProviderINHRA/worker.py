@@ -119,13 +119,40 @@ def push_sensor_change(bin_no: int, value: bool, quality: str = "OK") -> None:
             f"WORKER [PUSH ERROR] bin={bin_no} value={value} error={e}"
         )
 
+LED_BLOCKS = [
+    # полка 3
+    {"first_bin": 1,  "last_bin": 24, "addr": 10},   # Python_in_1
+    {"first_bin": 25, "last_bin": 48, "addr": 130},  # Python_in_2
+    {"first_bin": 49, "last_bin": 72, "addr": 250},  # Python_in_3
+    {"first_bin": 73, "last_bin": 80, "addr": 370},  # Python_in_4
+
+    # полка 4, если она идет сразу после Python_in_4
+    {"first_bin": 81,  "last_bin": 104, "addr": 410},  # Python_in_5
+    {"first_bin": 105, "last_bin": 128, "addr": 530},  # Python_in_6
+    {"first_bin": 129, "last_bin": 152, "addr": 650},  # Python_in_7
+    {"first_bin": 153, "last_bin": 160, "addr": 770},  # Python_in_8
+]
+
+SENSOR_BLOCKS = [
+    # полка 3
+    {"first_bin": 1,  "last_bin": 80,  "addr": 1000},  # Sensors3 
+
+    # полка 4
+    {"first_bin": 81, "last_bin": 160, "addr": 1101},  # Sensors4
+]
 
 class ModbusLocalWrapper:
     @staticmethod
     def calc_led_start_addr(bin_no: int) -> int:
         if bin_no < 1:
             raise ValueError(f"Invalid bin_no={bin_no}")
-        return BASE_ADDR + (bin_no - 1) * ROW_WIDTH
+
+        for block in LED_BLOCKS:
+            if block["first_bin"] <= bin_no <= block["last_bin"]:
+                local_bin = bin_no - block["first_bin"]
+                return block["addr"] + local_bin * ROW_WIDTH
+
+        raise ValueError(f"LED address not configured for bin_no={bin_no}")
 
     def write_modbus_led(self, bin_no: int, color: int, mode: int) -> None:
         start_addr = self.calc_led_start_addr(bin_no)
@@ -144,9 +171,14 @@ class ModbusLocalWrapper:
         if bin_no < 1:
             raise ValueError(f"Invalid bin_no={bin_no}")
 
-        coil_addr = SENSOR_COIL_BASE + (bin_no - 1)
-        value = get_coil_value(coil_addr)
-        return bool(value)
+        for block in SENSOR_BLOCKS:
+            if block["first_bin"] <= bin_no <= block["last_bin"]:
+                local_bin = bin_no - block["first_bin"]
+                coil_addr = block["addr"] + local_bin
+                value = get_coil_value(coil_addr)
+                return bool(value)
+
+        raise ValueError(f"Sensor address not configured for bin_no={bin_no}")
 
 
 def modbus_worker_loop(

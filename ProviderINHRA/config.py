@@ -1,4 +1,4 @@
-DEFAULT_BINS_COUNT = 80 # Кол-во ячеек
+DEFAULT_BINS_COUNT = 160 # Кол-во ячеек
 
 POLL_SENSORS_SEC = 0.3
 LOOP_SLEEP_SEC = 0.05

@@ -37,13 +37,21 @@ REG_F_ERR8 = 4036
 def read_dword(address: int) -> int:
     regs = get_hr_values(address, 2)
 
+    logger.info(f"MCU_DIAG RAW address={address} regs={regs}")
+
     if len(regs) < 2:
         raise RuntimeError(f"Не удалось прочитать DWORD address={address}")
 
     lo = int(regs[0]) & 0xFFFF
     hi = int(regs[1]) & 0xFFFF
 
-    return lo | (hi << 16)
+    value = lo | (hi << 16)
+
+    logger.info(
+        f"MCU_DIAG DWORD address={address} lo={lo} hi={hi} value={value}"
+    )
+
+    return value
 
 
 @dataclass(frozen=True)
@@ -107,10 +115,31 @@ def start_mcu_diag_monitor(db, poll_sec: float = 1.0) -> threading.Thread:
             try:
                 state = read_mcu_diag_state()
 
-                if state != last_state:
+                logger.info(f"MCU_DIAG CURRENT = {asdict(state)}")
+
+                if last_state is None:
+                    logger.info("MCU_DIAG first read, save to DB")
                     db.log_mcu_state(asdict(state))
                     last_state = state
+
+                elif state != last_state:
+                    old = asdict(last_state)
+                    new = asdict(state)
+
+                    logger.info("MCU_DIAG CHANGED VALUES:")
+
+                    for key in new:
+                        if old[key] != new[key]:
+                            logger.info(
+                                f"MCU_DIAG CHANGE {key}: {old[key]} -> {new[key]}"
+                            )
+
+                    db.log_mcu_state(new)
+                    last_state = state
                     logger.info("MCU_DIAG state changed, saved to DB")
+
+                else:
+                    logger.info("MCU_DIAG no changes")
 
             except Exception as e:
                 logger.exception(f"MCU_DIAG error={e}")
