@@ -2,11 +2,11 @@ import requests
 import time
 
 BASE_URL = "http://localhost:5000/led"
-MAX_BIN = 60  # всего ячеек
+MAX_BIN = 160  # всего ячеек
 
 # пример цветов и режимов
 colors = [1, 2, 3]    # красный, зеленый, белый
-modes = [0, 1, 2]     # 0 - постоянный, 1 - моргание, 2 - другой
+modes = [1, 1, 1]     # 0 - постоянный, 1 - моргание, 2 - другой
 
 for color in colors:
     for mode in modes:
@@ -22,4 +22,4 @@ for color in colors:
             except Exception as e:
                 print(f"Bin {bin_no} error: {e}")
         # пауза между сменами режима/цвета
-        time.sleep(1)
+        time.sleep(5)
