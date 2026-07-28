@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModbusOuterChannels>
+  <OuterCh Name="Python_in_1" Descr="" Length="120" Offset="10" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="HEARTBEAT" Descr="" Length="1" Offset="0" FunctionCode="WriteSingleCoil" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="PLC_ALIVE_COIL" Descr="PLC_ALIVE_COIL" Length="1" Offset="2" FunctionCode="ReadCoils" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Python_in_2" Descr="" Length="120" Offset="130" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Python_in_3" Descr="" Length="120" Offset="250" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Python_in_4" Descr="" Length="40" Offset="370" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="cnt_error1" Descr="" Length="2" Offset="4000" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="1MESMSU" Descr="" Length="1" Offset="5" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="cnt_error2" Descr="" Length="2" Offset="4002" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="cnt_error3" Descr="" Length="2" Offset="4004" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="cnt_error4" Descr="" Length="2" Offset="4006" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="cnt_error5" Descr="" Length="2" Offset="4008" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="cnt_error6" Descr="" Length="2" Offset="4010" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="cnt_error7" Descr="" Length="2" Offset="4012" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="cnt_error8" Descr="" Length="2" Offset="4014" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="SW_version" Descr="" Length="2" Offset="4016" FunctionCode="WriteMultipleRegisters" CycleTime="10000" ChType="Timer" />
+  <OuterCh Name="HW_Version" Descr="" Length="2" Offset="4018" FunctionCode="WriteMultipleRegisters" CycleTime="10000" ChType="Timer" />
+  <OuterCh Name="F_err1" Descr="" Length="2" Offset="4022" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="F_err2" Descr="" Length="2" Offset="4024" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="F_err3" Descr="" Length="2" Offset="4026" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="F_err4" Descr="" Length="2" Offset="4028" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="F_err5" Descr="" Length="2" Offset="4030" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="F_err6" Descr="" Length="2" Offset="4032" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="F_err7" Descr="" Length="2" Offset="4034" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="F_err8" Descr="" Length="2" Offset="4036" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="Sensors3" Descr="" Length="101" Offset="1000" FunctionCode="WriteMultipleCoils" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="i2c_error" Descr="" Length="2" Offset="4020" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Timer" />
+  <OuterCh Name="Python_in_5" Descr="" Length="120" Offset="410" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Python_in_6" Descr="" Length="120" Offset="530" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Python_in_7" Descr="" Length="120" Offset="650" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Python_in_8" Descr="" Length="40" Offset="770" FunctionCode="ReadHoldingRegisters" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="Sensors4" Descr="" Length="101" Offset="1101" FunctionCode="WriteMultipleCoils" CycleTime="100" ChType="Timer" />
+</ModbusOuterChannels>

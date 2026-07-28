@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModbusOuterChannels>
+  <OuterCh Name="Sensors3" Descr="" Length="159" Offset="1480" FunctionCode="ReadDiscreteInputs" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="3rgb_2" Descr="" Length="120" Offset="1760" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Trigger" />
+  <OuterCh Name="3rgb_1" Descr="" Length="120" Offset="1640" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Trigger" />
+  <OuterCh Name="3rgb_3" Descr="" Length="120" Offset="1880" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Trigger" />
+  <OuterCh Name="1RGB" Descr="" Length="99" Offset="1000" FunctionCode="WriteMultipleRegisters" CycleTime="100" ChType="Trigger" />
+  <OuterCh Name="Sensors" Descr="" Length="159" Offset="1320" FunctionCode="ReadDiscreteInputs" CycleTime="100" ChType="Timer" />
+  <OuterCh Name="HW_version" Descr="" Length="2" Offset="2" FunctionCode="ReadInputRegisters" CycleTime="30000" ChType="Timer" />
+  <OuterCh Name="1MESMSU" Descr="" Length="1" Offset="100" FunctionCode="ReadHoldingRegisters" CycleTime="10000" ChType="Trigger" />
+  <OuterCh Name="SW_Version" Descr="" Length="2" Offset="0" FunctionCode="ReadInputRegisters" CycleTime="30000" ChType="Timer" />
+  <OuterCh Name="i2c_error" Descr="" Length="2" Offset="200" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error1" Descr="" Length="2" Offset="204" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error2" Descr="" Length="2" Offset="206" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error3" Descr="" Length="2" Offset="208" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error4" Descr="" Length="2" Offset="210" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error5" Descr="" Length="2" Offset="212" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error6" Descr="" Length="2" Offset="214" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error7" Descr="" Length="2" Offset="217" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_error8" Descr="" Length="2" Offset="218" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err1" Descr="" Length="2" Offset="1000" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err2" Descr="" Length="2" Offset="1002" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err3" Descr="" Length="2" Offset="1004" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err4" Descr="" Length="2" Offset="1006" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err5" Descr="" Length="2" Offset="1008" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err6" Descr="" Length="2" Offset="1010" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err7" Descr="" Length="2" Offset="1012" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="F_err8" Descr="" Length="2" Offset="1014" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="4rgb_1" Descr="" Length="120" Offset="1960" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Trigger" />
+  <OuterCh Name="4rgb_2" Descr="" Length="120" Offset="2080" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Trigger" />
+  <OuterCh Name="4rgb_3" Descr="" Length="120" Offset="2200" FunctionCode="WriteMultipleRegisters" CycleTime="1000" ChType="Trigger" />
+  <OuterCh Name="Cnt_ok1" Descr="" Length="2" Offset="220" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_ok2" Descr="" Length="2" Offset="222" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_ok3" Descr="" Length="2" Offset="224" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_ok4" Descr="" Length="2" Offset="226" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_ok5" Descr="" Length="2" Offset="228" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_ok6" Descr="" Length="2" Offset="230" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_ok7" Descr="" Length="2" Offset="232" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+  <OuterCh Name="Cnt_ok8" Descr="" Length="2" Offset="234" FunctionCode="ReadInputRegisters" CycleTime="5000" ChType="Timer" />
+</ModbusOuterChannels>
